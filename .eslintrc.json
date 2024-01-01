@@ -41,6 +41,7 @@
   "plugins": ["@typescript-eslint", "react", "import"],
   "rules": {
     "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
     "import/order": [
       "error",
       {

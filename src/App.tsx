@@ -1,18 +1,10 @@
-import Wrapper from "./pages/Wrapper";
-import "./App.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Wrapper />,
-  },
-]);
+import { appRouter } from "./routes/appRoutes";
+import { RouterProvider } from "react-router-dom";
 
 const App = () => {
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <RouterProvider router={appRouter} />
     </div>
   );
 };
