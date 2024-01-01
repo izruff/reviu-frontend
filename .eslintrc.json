@@ -1,0 +1,51 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "node": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
+      }  
+    },
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:import/recommended",
+    "prettier"
+  ],
+  "ignorePatterns": [
+    "src/vite-env.d.ts",
+    "vite.config.ts"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module",
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
+  },
+  "plugins": ["@typescript-eslint", "react", "import"],
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": ["index","sibling", "parent", "internal", "external", "builtin", "object", "type"]
+      }
+    ]
+  }
+}
