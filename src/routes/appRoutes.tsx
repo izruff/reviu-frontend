@@ -6,7 +6,7 @@ import { HUBS } from "../constants";
 import Layout from "../pages/Layout";
 import HomePage from "../pages/HomePage";
 import UsersPage from "../pages/UsersPage";
-import PostsPage from "../pages/PostsPage";
+import PostsPage from "../pages/PostPage";
 import TopicsPage from "../pages/TopicsPage";
 import CombinedSearchPage from "../pages/CombinedSearchPage";
 import RegisterPage from "../pages/auth/RegisterPage";

@@ -14,8 +14,11 @@ export const userRoutes = [
     element: <TestPage />,
   },
   {
-    path: "notifications",
+    path: "activity",
     element: <TestPage />,
+  },
+  {
+    path: "saved"
   },
   {
     path: "settings",
