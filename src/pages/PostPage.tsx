@@ -1,14 +1,16 @@
 import { CommentBody } from "../components/CommentBody";
 import { PostBody } from "../components/PostBody";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const PostPage = () => {
   const commentList = ["some comments", "posted by", "other users", "to respond", "to this post"];
   
   return (
     <>
-      <PostBody />
-      <Typography>COMMENTS</Typography>
+      <Box marginTop={8}>
+        <PostBody />
+      </Box>
+      <Typography variant="h4" marginTop={8} marginBottom={4}>COMMENTS</Typography>
       {commentList.map((comment) => (
         <CommentBody comment={comment} />
       ))}

@@ -7,7 +7,7 @@ type Props = {
 
 export const TrendingPostCard = (props: Props) => {
   return (
-    <Card>
+    <Card sx={{ flexBasis: "400px", flexShrink: 0 }}>
       <Typography>{props.title}</Typography>
       <Typography>This is the post content, long text will be shown here but truncated.</Typography>
       <Typography>Here should be some statistics (votes, comment count, etc).</Typography>

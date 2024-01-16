@@ -1,4 +1,4 @@
-import { Box, AppBar, Toolbar, Button, CssBaseline, IconButton, Typography } from "@mui/material";
+import { Box, AppBar, Toolbar, Button, CssBaseline, IconButton, Typography, Container } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
 
@@ -7,7 +7,7 @@ const Layout = () => {
     <>
       <CssBaseline />
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="sticky">
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton
               size="large"
@@ -19,14 +19,17 @@ const Layout = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              News
+              reviu
             </Typography>
             <Button color="inherit">Login</Button>
             <Button color="inherit">Signup</Button>
           </Toolbar>
         </AppBar>
       </Box>
-      <Outlet />
+      <Toolbar />
+      <Container>
+        <Outlet />
+      </Container>
     </>
   );
 };
