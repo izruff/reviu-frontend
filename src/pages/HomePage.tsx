@@ -26,7 +26,8 @@ const HomePage = () => {
           height: "300px",
           overflowX: "auto",
           padding: 2,
-        }}>
+        }}
+      >
         {trendingList.map((postTitle) => (
           <TrendingPostCard title={postTitle} />
         ))}
@@ -38,7 +39,8 @@ const HomePage = () => {
       <Stack
         direction="column"
         spacing={1}
-        divider={<Divider orientation="horizontal" flexItem />}>
+        divider={<Divider orientation="horizontal" flexItem />}
+      >
         {discoverList.map((postTitle) => (
           <PostCard title={postTitle} topic={"placeholder"} />
         ))}

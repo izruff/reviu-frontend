@@ -14,7 +14,8 @@ const CommentBody = (props: Props) => {
         padding: 2,
         borderRadius: 0,
         marginLeft: props.level * 2,
-      }}>
+      }}
+    >
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar sx={{ width: 16, height: 16 }} />
         <Typography variant="subtitle2">{props.comment.author}</Typography>
