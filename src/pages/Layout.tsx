@@ -1,4 +1,13 @@
-import { Box, AppBar, Toolbar, Button, CssBaseline, IconButton, Typography, Container } from "@mui/material";
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Button,
+  CssBaseline,
+  IconButton,
+  Typography,
+  Container,
+} from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
 
@@ -14,8 +23,7 @@ const Layout = () => {
               edge="start"
               color="inherit"
               aria-label="menu"
-              sx={{ mr: 2 }}
-            >
+              sx={{ mr: 2 }}>
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -27,7 +35,7 @@ const Layout = () => {
         </AppBar>
       </Box>
       <Toolbar />
-      <Container>
+      <Container sx={{ paddingY: 8 }}>
         <Outlet />
       </Container>
     </>

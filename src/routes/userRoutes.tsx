@@ -18,7 +18,7 @@ export const userRoutes = [
     element: <TestPage />,
   },
   {
-    path: "saved"
+    path: "saved",
   },
   {
     path: "settings",
