@@ -8,25 +8,25 @@ type Props = {
 };
 
 const CommentTree = (props: Props) => {
-  
-  console.log(props.commentTree)
-  console.log(props.commentTree.children)
-  console.log("test")
+  console.log(props.commentTree);
+  console.log(props.commentTree.children);
+  console.log("test");
 
   return (
-    <>
-      {props.commentTree.children !== undefined ? <Stack direction="column">
-        <CommentBody comment={props.commentTree.parent} level={props.rootLevel} />
-        {props.commentTree.children.map((commentTree) => (
-          <CommentTree
-            commentTree={commentTree}
-            rootLevel={props.rootLevel + 1}
-          />
-        ))}
-      </Stack> : <></>}
-    </>
+    <Stack direction="column">
+      <CommentBody
+        comment={props.commentTree.parent}
+        level={props.rootLevel}
+      />
+      {props.commentTree.children.map((commentTree) => (
+        <CommentTree
+          key={commentTree.parent.commentId}
+          commentTree={commentTree}
+          rootLevel={props.rootLevel + 1}
+        />
+      ))}
+    </Stack>
   );
-  
 };
 
 export default CommentTree;

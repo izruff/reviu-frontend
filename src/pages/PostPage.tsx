@@ -8,22 +8,25 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 type Props = {
-  surfaceLevelLimit?: number,
-  replyLimit?: number,
-}
+  surfaceLevelLimit?: number;
+  replyLimit?: number;
+};
 
-async function getReplies(postId:number, commentId: number) {
-  const data = await fetch(`${API_URL}/public/posts/id/${postId}/comments/id/${commentId}/replies`, {
-    method: "GET",
-    headers: {"Content-Type": "application/json"},
-  })
+async function getReplies(postId: number, commentId: number) {
+  const data = await fetch(
+    `${API_URL}/public/posts/id/${postId}/comments/id/${commentId}/replies`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+  )
     .then((res) => {
       return res.json();
     })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
       return [];
-    })
+    });
 
   return data;
 }
@@ -34,30 +37,32 @@ async function getCommentTree(postId: number, comment: CommentType) {
     return {
       parent: comment,
       children: [],
-    }
+    };
   }
   const commentTree: CommentTreeType = {
     parent: comment,
-    children: await Promise.all(replies.map(async (reply) => await getCommentTree(postId, reply))),
-  }
-  return commentTree
+    children: await Promise.all(
+      replies.map(async (reply) => await getCommentTree(postId, reply)),
+    ),
+  };
+  return commentTree;
 }
 
 const PostPage = (props: Props) => {
   const postIdParam = useParams().postId;
-  const [postData, setPostData] = React.useState<PostType | null>(null)
-  const [commentsData, setCommentsData] = React.useState<CommentTreeType[]>([])
+  const [postData, setPostData] = React.useState<PostType | null>(null);
+  const [commentsData, setCommentsData] = React.useState<CommentTreeType[]>([]);
 
   const postId = Number(postIdParam);
   if (isNaN(postId)) {
-    throw new Error("invalid post ID format")
+    throw new Error("invalid post ID format");
   }
 
   // Get post body
   useEffect(() => {
     fetch(`${API_URL}/public/posts/id/${postId}`, {
       method: "GET",
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
         return res.json();
@@ -75,43 +80,49 @@ const PostPage = (props: Props) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [])
+  }, []);
 
   // Get comments and its replies
   useEffect(() => {
     fetch(`${API_URL}/public/posts/id/${postId}/replies`, {
       method: "GET",
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
         return res.json();
       })
       .then(async (data) => {
-        const commentTrees = await Promise.all(data.map(async (comment: CommentType) => await getCommentTree(postId, comment)));
+        const commentTrees = await Promise.all(
+          data.map(
+            async (comment: CommentType) =>
+              await getCommentTree(postId, comment),
+          ),
+        );
         setCommentsData(commentTrees);
       })
       .catch((error) => {
-        console.log(error)
-      })
-  }, [])
+        console.log(error);
+      });
+  }, []);
 
-  console.log(commentsData)
+  console.log(commentsData);
 
   return (
     <>
-      {postData && commentsData.length > 0 ?
-      <>
-        <PostBody post={postData} />
-        <Typography variant="h4" marginTop={8} marginBottom={4}>
-          COMMENTS
-        </Typography>
-        {commentsData.map((commentTree) => (
-          <CommentTree commentTree={commentTree} rootLevel={0} />
-        ))}
-        <Typography>Load more comments...</Typography>
-      </>
-      : <Typography>Loading post...</Typography>
-      }
+      {postData && commentsData.length > 0 ? (
+        <>
+          <PostBody post={postData} />
+          <Typography variant="h4" marginTop={8} marginBottom={4}>
+            COMMENTS
+          </Typography>
+          {commentsData.map((commentTree) => (
+            <CommentTree commentTree={commentTree} rootLevel={0} />
+          ))}
+          <Typography>Load more comments...</Typography>
+        </>
+      ) : (
+        <Typography>Loading post...</Typography>
+      )}
     </>
   );
 };

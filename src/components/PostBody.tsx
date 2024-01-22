@@ -1,7 +1,7 @@
-import { PostType } from "../types/Post";
-import { Avatar, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import { UserLink } from "./UserLink";
 import { TopicLink } from "./TopicLink";
+import { PostType } from "../types/Post";
+import { Avatar, Paper, Stack, Typography } from "@mui/material";
 
 type Props = {
   post: PostType;
@@ -15,8 +15,9 @@ const PostBody = (props: Props) => {
           <Stack direction="row" spacing={1} alignItems="center">
             <Avatar sx={{ width: 24, height: 24 }} />
             <Typography variant="subtitle2">
-              Posted by <UserLink userId={props.post.authorId} /> on the topic of <TopicLink topicId={props.post.topicId} />,
-              on {props.post.createdAt}.
+              Posted by <UserLink userId={props.post.authorId} /> on the topic
+              of <TopicLink topicId={props.post.topicId} />, on{" "}
+              {props.post.createdAt}.
             </Typography>
           </Stack>
           <Typography variant="h2">{props.post.title}</Typography>

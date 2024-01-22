@@ -1,6 +1,6 @@
+import { UserLink } from "./UserLink";
 import { CommentType } from "../types/Comment";
 import { Avatar, Card, Stack, Typography } from "@mui/material";
-import { UserLink } from "./UserLink";
 
 type Props = {
   comment: CommentType;
@@ -19,7 +19,9 @@ const CommentBody = (props: Props) => {
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar sx={{ width: 16, height: 16 }} />
-        <Typography variant="subtitle2"><UserLink userId={props.comment.authorId} /></Typography>
+        <Typography variant="subtitle2">
+          <UserLink userId={props.comment.authorId} />
+        </Typography>
       </Stack>
       <Typography variant="body1">{props.comment.content}</Typography>
     </Card>
