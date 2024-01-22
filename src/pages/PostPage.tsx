@@ -1,117 +1,117 @@
+import { API_URL } from "../constants";
 import PostBody from "../components/PostBody";
-import { CommentTreeType } from "../types/Comment";
+import { CommentTreeType, CommentType } from "../types/Comment";
 import CommentTree from "../components/CommentTree";
 import { PostType } from "../types/Post";
 import { Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-const PostPage = () => {
-  const post: PostType = {
-    postId: 1,
-    title: "Lorem Ipsum",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    author: "Aiken",
-    authorId: 1,
-    topic: "lorem-ipsum",
-    topicId: 1,
-    createdAt: 0,
-  };
+type Props = {
+  surfaceLevelLimit?: number,
+  replyLimit?: number,
+}
 
-  const comment1 = {
-    commentId: 1,
-    content: "This is the first comment of this post.",
-    author: "Aiken",
-    authorId: 1,
-    createdAt: 0,
-  };
-  const comment2 = {
-    commentId: 2,
-    content: "This is the second comment of this post.",
-    author: "Dueet",
-    authorId: 2,
-    createdAt: 0,
-  };
-  const reply1 = {
-    commentId: 3,
-    content: "This is me replying to the post above.",
-    author: "Dueet",
-    authorId: 2,
-    createdAt: 0,
-  };
-  const reply2 = {
-    commentId: 4,
-    content: "This is another reply by me.",
-    author: "Dueet",
-    authorId: 2,
-    createdAt: 0,
-  };
-  const reply3 = {
-    commentId: 5,
-    content: "Another reply!",
-    author: "Aiken",
-    authorId: 1,
-    createdAt: 0,
-  };
-  const subreply1 = {
-    commentId: 6,
-    content: "Wow, so many replies!",
-    author: "Aiken",
-    authorId: 1,
-    createdAt: 0,
-  };
-  const subreply2 = {
-    commentId: 7,
-    content: "This is a reply to your reply.",
-    author: "Dueet",
-    authorId: 2,
-    createdAt: 0,
-  };
+async function getReplies(postId:number, commentId: number) {
+  const data = await fetch(`${API_URL}/public/posts/id/${postId}/comments/id/${commentId}/replies`, {
+    method: "GET",
+    headers: {"Content-Type": "application/json"},
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((error) => {
+      console.log(error)
+      return [];
+    })
 
-  const comments: CommentTreeType[] = [
-    {
-      parent: comment1,
-      children: [
-        {
-          parent: reply1,
-          children: [],
-        },
-        {
-          parent: reply2,
-          children: [
-            {
-              parent: subreply1,
-              children: [],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      parent: comment2,
-      children: [
-        {
-          parent: reply3,
-          children: [
-            {
-              parent: subreply2,
-              children: [],
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  return data;
+}
+
+async function getCommentTree(postId: number, comment: CommentType) {
+  const replies = await getReplies(postId, comment.commentId);
+  if (replies.length === 0) {
+    return {
+      parent: comment,
+      children: [],
+    }
+  }
+  const commentTree: CommentTreeType = {
+    parent: comment,
+    children: await Promise.all(replies.map(async (reply) => await getCommentTree(postId, reply))),
+  }
+  return commentTree
+}
+
+const PostPage = (props: Props) => {
+  const postIdParam = useParams().postId;
+  const [postData, setPostData] = React.useState<PostType | null>(null)
+  const [commentsData, setCommentsData] = React.useState<CommentTreeType[]>([])
+
+  const postId = Number(postIdParam);
+  if (isNaN(postId)) {
+    throw new Error("invalid post ID format")
+  }
+
+  // Get post body
+  useEffect(() => {
+    fetch(`${API_URL}/public/posts/id/${postId}`, {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setPostData({
+          postId: postId,
+          title: data.title,
+          content: data.content,
+          authorId: data.authorId,
+          topicId: data.topicId,
+          createdAt: data.createdAt,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [])
+
+  // Get comments and its replies
+  useEffect(() => {
+    fetch(`${API_URL}/public/posts/id/${postId}/replies`, {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then(async (data) => {
+        const commentTrees = await Promise.all(data.map(async (comment: CommentType) => await getCommentTree(postId, comment)));
+        setCommentsData(commentTrees);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
+
+  console.log(commentsData)
 
   return (
     <>
-      <PostBody post={post} />
-      <Typography variant="h4" marginTop={8} marginBottom={4}>
-        COMMENTS
-      </Typography>
-      {comments.map((commentTree) => (
-        <CommentTree commentTree={commentTree} rootLevel={0} />
-      ))}
-      <Typography>Load more comments...</Typography>
+      {postData && commentsData.length > 0 ?
+      <>
+        <PostBody post={postData} />
+        <Typography variant="h4" marginTop={8} marginBottom={4}>
+          COMMENTS
+        </Typography>
+        {commentsData.map((commentTree) => (
+          <CommentTree commentTree={commentTree} rootLevel={0} />
+        ))}
+        <Typography>Load more comments...</Typography>
+      </>
+      : <Typography>Loading post...</Typography>
+      }
     </>
   );
 };
