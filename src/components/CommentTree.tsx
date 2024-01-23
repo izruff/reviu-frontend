@@ -8,16 +8,9 @@ type Props = {
 };
 
 const CommentTree = (props: Props) => {
-  console.log(props.commentTree);
-  console.log(props.commentTree.children);
-  console.log("test");
-
   return (
     <Stack direction="column">
-      <CommentBody
-        comment={props.commentTree.parent}
-        level={props.rootLevel}
-      />
+      <CommentBody comment={props.commentTree.parent} level={props.rootLevel} />
       {props.commentTree.children.map((commentTree) => (
         <CommentTree
           key={commentTree.parent.commentId}

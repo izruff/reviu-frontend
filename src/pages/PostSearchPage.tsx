@@ -2,16 +2,17 @@ import React from "react";
 import { API_URL } from "../constants";
 import { Divider, MenuItem, Select, Stack, Typography } from "@mui/material";
 import PostCard from "../components/PostCard";
+import { useSubmit } from "react-router-dom";
 
-type Props = {
-  
-}
+type Props = {};
 
 const PostSearchPage = (props: Props) => {
-  const [postSearchResults, setPostSearchResults] = React.useState(["some", "post", "titles", "to display", "on the", "search", "results"]);
+  const [postSearchResults, setPostSearchResults] = React.useState([]);
   const [sortOption, setSortOption] = React.useState("age-asc");
 
-  /*React.useEffect(() => {
+  const submit = useSubmit()
+
+  React.useEffect(() => {
     fetch(`${API_URL}/public/posts/${window.location.search}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -25,18 +26,23 @@ const PostSearchPage = (props: Props) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [sortOption])*/
+  }, [window.location.search])
 
   return (
     <>
       <Typography variant="h2">Search Results</Typography>
       <Stack direction="row" justifyContent="space-between">
-        <Typography variant="subtitle1">{postSearchResults.length} matching posts found.</Typography>
+        <Typography variant="subtitle1">
+          {postSearchResults.length} matching posts found.
+        </Typography>
         <Stack direction="row" spacing={2}>
           <Typography variant="subtitle1">Sort by</Typography>
           <Select
+            id="sort-by"
             value={sortOption}
-            onChange={(event) => {setSortOption(event.target.value)}}
+            onChange={(event) => {
+              setSortOption(event.target.value); // TODO: automatically get new search results
+            }}
             displayEmpty
           >
             <MenuItem value="similarity">Similarity</MenuItem>
@@ -46,14 +52,14 @@ const PostSearchPage = (props: Props) => {
           </Select>
         </Stack>
       </Stack>
-      <Divider sx={{marginY: 1}}/>
+      <Divider sx={{ marginY: 1 }} />
       <Stack
         direction="column"
         spacing={1}
         divider={<Divider orientation="horizontal" flexItem />}
       >
-        {postSearchResults.map((postTitle) => (
-          <PostCard title={postTitle} topic={"placeholder"} />
+        {postSearchResults.map((post) => (
+          <PostCard post={post} />
         ))}
       </Stack>
     </>

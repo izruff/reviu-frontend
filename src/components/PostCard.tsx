@@ -1,8 +1,10 @@
 import { Avatar, Card, Stack, Typography } from "@mui/material";
+import { PostType } from "../types/Post";
+import { UserLink } from "./UserLink";
+import { TopicLink } from "./TopicLink";
 
 type Props = {
-  title: string;
-  topic: string;
+  post: PostType
 };
 
 const PostCard = (props: Props) => {
@@ -21,9 +23,9 @@ const PostCard = (props: Props) => {
       <Stack direction="column" spacing={2}>
         <div>
           <Typography variant="subtitle2">
-            On the topic of {props.topic}
+            On the topic of <TopicLink topicId={props.post.topicId} />
           </Typography>
-          <Typography variant="h4">{props.title}</Typography>
+          <Typography variant="h4">{props.post.title}</Typography>
         </div>
         <div
           style={{
@@ -37,27 +39,7 @@ const PostCard = (props: Props) => {
           }}
         >
           <Typography variant="body1">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in
-            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-            officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit
-            amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+            {props.post.content}
           </Typography>
         </div>
         <Stack direction="row" spacing={2} alignItems="center">
@@ -66,7 +48,7 @@ const PostCard = (props: Props) => {
           </Typography>
           <Avatar sx={{ width: 24, height: 24 }} />
           <Typography variant="subtitle2">
-            Posted by Aiken, 24 minutes ago.
+            Posted by <UserLink userId={props.post.authorId} />, on {props.post.createdAt}.
           </Typography>
         </Stack>
       </Stack>

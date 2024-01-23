@@ -10,16 +10,18 @@ import {
   Stack,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 
 const Layout = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <CssBaseline />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed" color="inherit">
-          <Toolbar sx={{justifyContent:"space-between"}}>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             <Stack direction="row" spacing={2} alignItems="center">
               <IconButton
                 size="large"
@@ -35,8 +37,12 @@ const Layout = () => {
             </Stack>
             <SearchBar />
             <Stack direction="row" spacing={1} alignItems="center">
-              <Button variant="outlined" color="primary">Login</Button>
-              <Button variant="contained" color="primary">Signup</Button>
+              <Button variant="outlined" color="primary" onClick={() => {navigate("/login")}}>
+                Login
+              </Button>
+              <Button variant="contained" color="primary" onClick={() => {navigate("/signup")}}>
+                Signup
+              </Button>
             </Stack>
           </Toolbar>
         </AppBar>
