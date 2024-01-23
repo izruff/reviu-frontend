@@ -1,3 +1,4 @@
+import { API_URL } from "../../constants";
 import {
   Button,
   Container,
@@ -7,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { API_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
@@ -17,13 +17,13 @@ const LoginPage = () => {
     React.useState("");
   const [passwordErrStatus, setPasswordStatus] = React.useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     const data = {
       usernameOrEmail: usernameOrEmail,
-      password: password
-    }
+      password: password,
+    };
 
     fetch(`${API_URL}/account/login`, {
       method: "POST",
@@ -37,8 +37,8 @@ const LoginPage = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
-    
+      });
+
     navigate(-1);
   }
 
@@ -54,7 +54,9 @@ const LoginPage = () => {
             label="Email/Username"
             variant="outlined"
             helperText={usernameOrEmailErrStatus}
-            onChange={(e) => {setUsernameOrEmail(e.target.value)}}
+            onChange={(e) => {
+              setUsernameOrEmail(e.target.value);
+            }}
           />
           <TextField
             error={passwordErrStatus !== ""}
@@ -64,10 +66,14 @@ const LoginPage = () => {
             label="Password"
             variant="outlined"
             helperText={passwordErrStatus}
-            onChange={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
           <Stack direction="row" justifyContent="space-between">
-            <Button variant="contained" onClick={handleSubmit}>Login</Button>
+            <Button variant="contained" onClick={handleSubmit}>
+              Login
+            </Button>
             <Button variant="text">Forgot password?</Button>
           </Stack>
         </Stack>

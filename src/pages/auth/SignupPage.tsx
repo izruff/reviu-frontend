@@ -18,15 +18,15 @@ const SignupPage = () => {
   const [passwordErrStatus, setPasswordStatus] = React.useState("");
 
   function handleEmailChange(event) {
-    setEmail(event.target.value)
+    setEmail(event.target.value);
   }
 
   function handleUsernameChange(event) {
-    setUsername(event.target.value)
+    setUsername(event.target.value);
   }
 
   function handlePasswordChange(event) {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
   }
 
   return (

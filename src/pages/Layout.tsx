@@ -1,3 +1,4 @@
+import SearchBar from "../components/SearchBar";
 import {
   Box,
   AppBar,
@@ -11,7 +12,6 @@ import {
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { Outlet, useNavigate } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -37,10 +37,22 @@ const Layout = () => {
             </Stack>
             <SearchBar />
             <Stack direction="row" spacing={1} alignItems="center">
-              <Button variant="outlined" color="primary" onClick={() => {navigate("/login")}}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
                 Login
               </Button>
-              <Button variant="contained" color="primary" onClick={() => {navigate("/signup")}}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  navigate("/signup");
+                }}
+              >
                 Signup
               </Button>
             </Stack>

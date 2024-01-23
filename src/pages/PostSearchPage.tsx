@@ -1,7 +1,7 @@
-import React from "react";
 import { API_URL } from "../constants";
-import { Divider, MenuItem, Select, Stack, Typography } from "@mui/material";
 import PostCard from "../components/PostCard";
+import React from "react";
+import { Divider, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useSubmit } from "react-router-dom";
 
 type Props = {};
@@ -10,7 +10,7 @@ const PostSearchPage = (props: Props) => {
   const [postSearchResults, setPostSearchResults] = React.useState([]);
   const [sortOption, setSortOption] = React.useState("age-asc");
 
-  const submit = useSubmit()
+  const submit = useSubmit();
 
   React.useEffect(() => {
     fetch(`${API_URL}/public/posts/${window.location.search}`, {
@@ -26,7 +26,7 @@ const PostSearchPage = (props: Props) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [window.location.search])
+  }, [window.location.search]);
 
   return (
     <>
