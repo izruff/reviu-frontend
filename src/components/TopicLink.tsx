@@ -1,7 +1,7 @@
 import { API_URL } from "../constants";
 import { TopicType } from "../types/Topic";
 import { Card, Skeleton, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 
 type Props = {
   topicId: number;
@@ -12,7 +12,7 @@ export const TopicLink = (props: Props) => {
   const [topicData, setTopicData] = React.useState<TopicType | null>(null);
   const [contentVisible, setContentVisible] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(`${API_URL}/public/topics/id/${props.topicId}/?topic=true`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -28,8 +28,8 @@ export const TopicLink = (props: Props) => {
       });
   }, []);
 
-  useEffect(() => {
-    fetch(`${API_URL}/public/users/id/${props.topicId}/?topic=false`, {
+  React.useEffect(() => {
+    fetch(`${API_URL}/public/topics/id/${props.topicId}/?topic=false`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })

@@ -6,6 +6,9 @@ const router = createBrowserRouter(appRoutes);
 
 const theme = createTheme({
   palette: {
+    primary: {
+      main: "#1a73e8",
+    },
     background: {
       default: "#f7f7f7",
     },

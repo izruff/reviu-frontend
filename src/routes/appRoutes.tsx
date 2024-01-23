@@ -5,11 +5,10 @@ import { topicRoutes } from "./topicRoutes";
 import { HUBS } from "../constants";
 import Layout from "../pages/Layout";
 import HomePage from "../pages/HomePage";
-import UsersPage from "../pages/UsersPage";
-import PostsPage from "../pages/PostPage";
-import TopicsPage from "../pages/TopicsPage";
-import CombinedSearchPage from "../pages/CombinedSearchPage";
-import RegisterPage from "../pages/auth/RegisterPage";
+import UserSearchPage from "../pages/UserSearchPage";
+import TopicSearchPage from "../pages/TopicSearchPage";
+import PostSearchPage from "../pages/PostSearchPage";
+import SignupPage from "../pages/auth/SignupPage";
 import LoginPage from "../pages/auth/LoginPage";
 import RecoverPage from "../pages/auth/RecoverPage";
 import ErrNotFoundPage from "../pages/errors/ErrNotFoundPage";
@@ -25,7 +24,7 @@ export const appRoutes = [
       })),
       {
         path: "/users",
-        element: <UsersPage />,
+        element: <UserSearchPage />,
       },
       {
         path: "/users/:username",
@@ -33,7 +32,7 @@ export const appRoutes = [
       },
       {
         path: "/posts",
-        element: <PostsPage />,
+        element: <PostSearchPage />,
       },
       {
         path: "/posts/:postId",
@@ -41,15 +40,11 @@ export const appRoutes = [
       },
       {
         path: "/topics",
-        element: <TopicsPage />,
+        element: <TopicSearchPage />,
       },
       {
         path: "/topics/:topicId",
         children: topicRoutes,
-      },
-      {
-        path: "/search",
-        element: <CombinedSearchPage />,
       },
       {
         path: "/moderator", // TODO: moderatorRoute.tsx
@@ -62,12 +57,12 @@ export const appRoutes = [
     errorElement: <ErrUnknownPage />,
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/signup",
+    element: <SignupPage />,
   },
   {
     path: "/login",
-    Element: <LoginPage />,
+    element: <LoginPage />,
   },
   {
     path: "/recover",

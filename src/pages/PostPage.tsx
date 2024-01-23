@@ -4,7 +4,7 @@ import { CommentTreeType, CommentType } from "../types/Comment";
 import CommentTree from "../components/CommentTree";
 import { PostType } from "../types/Post";
 import { Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 
 type Props = {
@@ -59,7 +59,7 @@ const PostPage = (props: Props) => {
   }
 
   // Get post body
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(`${API_URL}/public/posts/id/${postId}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -83,7 +83,7 @@ const PostPage = (props: Props) => {
   }, []);
 
   // Get comments and its replies
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(`${API_URL}/public/posts/id/${postId}/replies`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -104,8 +104,6 @@ const PostPage = (props: Props) => {
         console.log(error);
       });
   }, []);
-
-  console.log(commentsData);
 
   return (
     <>

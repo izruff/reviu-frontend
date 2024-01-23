@@ -1,7 +1,7 @@
 import { API_URL } from "../constants";
 import { UserType } from "../types/User";
 import { Card, Skeleton, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 
 type Props = {
   userId: number;
@@ -12,7 +12,7 @@ export const UserLink = (props: Props) => {
   const [userData, setUserData] = React.useState<UserType | null>(null);
   const [contentVisible, setContentVisible] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(`${API_URL}/public/users/id/${props.userId}/?username=true`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -28,7 +28,7 @@ export const UserLink = (props: Props) => {
       });
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(`${API_URL}/public/users/id/${props.userId}/?username=false`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
