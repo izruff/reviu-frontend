@@ -1,18 +1,15 @@
 import PostCard from "../components/PostCard";
 import TrendingPostCard from "../components/TrendingPostCard";
+import React from "react";
 import { Divider, Stack, Typography } from "@mui/material";
 
 const HomePage = () => {
-  const trendingList = [
-    "some",
-    "posts",
-    "which",
-    "are",
-    "at the",
-    "time",
-    "trending",
-  ];
-  const discoverList = ["some posts", "we recommend", "on your", "home page"];
+  const [trendingList, setTrendingList] = React.useState([]);
+  const [discoverList, setDiscoverList] = React.useState([]);
+
+  React.useEffect(() => {
+    // TODO
+  }, []);
 
   return (
     <>
@@ -28,8 +25,8 @@ const HomePage = () => {
           padding: 2,
         }}
       >
-        {trendingList.map((postTitle) => (
-          <TrendingPostCard title={postTitle} />
+        {trendingList.map((post) => (
+          <TrendingPostCard post={post} />
         ))}
       </Stack>
 
@@ -41,8 +38,8 @@ const HomePage = () => {
         spacing={1}
         divider={<Divider orientation="horizontal" flexItem />}
       >
-        {discoverList.map((postTitle) => (
-          <PostCard title={postTitle} topic={"placeholder"} />
+        {discoverList.map((post) => (
+          <PostCard post={post} />
         ))}
       </Stack>
     </>
