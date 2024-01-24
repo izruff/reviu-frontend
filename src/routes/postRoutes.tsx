@@ -1,4 +1,5 @@
 import PostPage from "../pages/PostPage";
+import PostEditPage from "../pages/PostEditPage";
 import TestPage from "../pages/TestPage";
 
 export const postRoutes = [
@@ -12,6 +13,6 @@ export const postRoutes = [
   },
   {
     path: "edit",
-    element: <TestPage />,
+    element: <PostEditPage />,
   },
 ];

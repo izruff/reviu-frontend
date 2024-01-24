@@ -1,13 +1,14 @@
-import { hubRoutes } from "./hubRoutes";
 import { userRoutes } from "./userRoutes";
 import { postRoutes } from "./postRoutes";
 import { topicRoutes } from "./topicRoutes";
 import { HUBS } from "../constants";
 import Layout from "../pages/Layout";
 import HomePage from "../pages/HomePage";
+import HubPage from "../pages/HubPage";
 import UserSearchPage from "../pages/UserSearchPage";
 import TopicSearchPage from "../pages/TopicSearchPage";
 import PostSearchPage from "../pages/PostSearchPage";
+import PostCreatePage from "../pages/PostCreatePage";
 import SignupPage from "../pages/auth/SignupPage";
 import LoginPage from "../pages/auth/LoginPage";
 import RecoverPage from "../pages/auth/RecoverPage";
@@ -20,7 +21,7 @@ export const appRoutes = [
     children: [
       ...HUBS.map((hub) => ({
         path: "/" + hub,
-        children: hubRoutes(hub),
+        element: <HubPage hub={hub} />,
       })),
       {
         path: "/users",
@@ -35,6 +36,10 @@ export const appRoutes = [
         element: <PostSearchPage />,
       },
       {
+        path: "/posts/create",
+        element: <PostCreatePage />,
+      },
+      {
         path: "/posts/:postId",
         children: postRoutes,
       },
@@ -47,7 +52,7 @@ export const appRoutes = [
         children: topicRoutes,
       },
       {
-        path: "/moderator", // TODO: moderatorRoute.tsx
+        path: "/moderator",
       },
       {
         path: "/",
