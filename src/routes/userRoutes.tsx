@@ -1,13 +1,15 @@
+import UserPage from "../pages/UserPage";
+import UserEditPage from "../pages/UserEditPage";
 import TestPage from "../pages/TestPage";
 
 export const userRoutes = [
   {
     index: true,
-    element: <TestPage />,
+    element: <UserPage />,
   },
   {
     path: "edit",
-    element: <TestPage />,
+    element: <UserEditPage />,
   },
   {
     path: "follows",

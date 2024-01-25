@@ -4,9 +4,7 @@ import React from "react";
 import { Divider, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useSubmit } from "react-router-dom";
 
-type Props = {};
-
-const PostSearchPage = (props: Props) => {
+const PostSearchPage = () => {
   const [postSearchResults, setPostSearchResults] = React.useState([]);
   const [sortOption, setSortOption] = React.useState("age-asc");
 

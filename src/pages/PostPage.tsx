@@ -121,7 +121,7 @@ const PostPage = (props: Props) => {
         </> : <Stack alignItems="center" spacing={2}>
           <img src={noMoreContentImg} alt="No content." width={120} />
           <Typography variant="body1">Looks like there are no comments yet...</Typography>
-          <Link to="/b"><Typography variant="body2">Post a new comment.</Typography></Link>
+          <Link to="/"><Typography variant="body2">Post a new comment.</Typography></Link>
         </Stack>}
       </> : <Stack alignItems="center"><CircularProgress /></Stack>}
     </>

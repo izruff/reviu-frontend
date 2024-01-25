@@ -2,16 +2,14 @@ import { API_URL } from "../constants";
 import { UserType } from "../types/User";
 import React from "react";
 import { Avatar, Stack, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
 
-type Props = {
-  userId: number;
-};
-
-const UserPage = (props: Props) => {
+const UserPage = () => {
+  const username = useParams().username;
   const [userData, setUserData] = React.useState<UserType | null>(null);
 
   React.useEffect(() => {
-    fetch(`${API_URL}/public/users/id/${props.userId}/?username=false`, {
+    fetch(`${API_URL}/public/users/id/${userId}/?username=false`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
