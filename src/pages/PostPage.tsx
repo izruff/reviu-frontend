@@ -3,9 +3,10 @@ import PostBody from "../components/PostBody";
 import { CommentTreeType, CommentType } from "../types/Comment";
 import CommentTree from "../components/CommentTree";
 import { PostType } from "../types/Post";
-import { Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import noMoreContentImg from "../../public/no-more-content.png";
 
 type Props = {
   surfaceLevelLimit?: number;
@@ -107,20 +108,22 @@ const PostPage = (props: Props) => {
 
   return (
     <>
-      {postData && commentsData.length > 0 ? (
-        <>
-          <PostBody post={postData} />
-          <Typography variant="h4" marginTop={8} marginBottom={4}>
-            COMMENTS
-          </Typography>
+      {postData !== null ? <>
+        <PostBody post={postData} />
+        <Typography variant="h4" marginTop={8} marginBottom={4}>
+          COMMENTS
+        </Typography>
+        {commentsData.length ? <>
           {commentsData.map((commentTree) => (
             <CommentTree commentTree={commentTree} rootLevel={0} />
           ))}
-          <Typography>Load more comments...</Typography>
-        </>
-      ) : (
-        <Typography>Loading post...</Typography>
-      )}
+          <Typography variant="body2">Load more comments...</Typography>
+        </> : <Stack alignItems="center" spacing={2}>
+          <img src={noMoreContentImg} alt="No content." width={120} />
+          <Typography variant="body1">Looks like there are no comments yet...</Typography>
+          <Link to="/b"><Typography variant="body2">Post a new comment.</Typography></Link>
+        </Stack>}
+      </> : <Stack alignItems="center"><CircularProgress /></Stack>}
     </>
   );
 };

@@ -55,6 +55,10 @@ export const UserLink = (props: Props) => {
         onMouseOut={() => {
           setContentVisible(false);
         }}
+        sx={contentVisible ? {
+          color: "#1661c4",
+          textDecoration: "underline",
+        } : {}}
       >
         {username ? (
           username
@@ -62,26 +66,24 @@ export const UserLink = (props: Props) => {
           <Skeleton width={80} sx={{ display: "inline-block" }} />
         )}
       </Typography>
-      {contentVisible && (
-        <Card sx={{ display: "relative" }}>
-          <Typography>{userData ? userData.username : <Skeleton />}</Typography>
-          <Typography>{userData ? userData.nickname : <Skeleton />}</Typography>
-          <Typography>{userData ? userData.about : <Skeleton />}</Typography>
-          <Typography>
-            {userData ? userData.createdAt : <Skeleton />}
-          </Typography>
-          <Typography>
-            {userData ? userData.followerCount : <Skeleton />}
-          </Typography>
-          <Typography>
-            {userData ? userData.followingCount : <Skeleton />}
-          </Typography>
-          <Typography>
-            {userData ? userData.postCount : <Skeleton />}
-          </Typography>
-          <Typography>{userData ? userData.rating : <Skeleton />}</Typography>
-        </Card>
-      )}
+      {contentVisible && <Card sx={{ position: "absolute", zIndex: 2, padding: 2 }}>
+        <Typography>{userData ? userData.username : <Skeleton />}</Typography>
+        <Typography>{userData ? userData.nickname : <Skeleton />}</Typography>
+        <Typography>{userData ? userData.about : <Skeleton />}</Typography>
+        <Typography>
+          {userData ? userData.createdAt : <Skeleton />}
+        </Typography>
+        <Typography>
+          {userData ? userData.followerCount : <Skeleton />}
+        </Typography>
+        <Typography>
+          {userData ? userData.followingCount : <Skeleton />}
+        </Typography>
+        <Typography>
+          {userData ? userData.postCount : <Skeleton />}
+        </Typography>
+        <Typography>{userData ? userData.rating : <Skeleton />}</Typography>
+      </Card>}
     </>
   );
 };

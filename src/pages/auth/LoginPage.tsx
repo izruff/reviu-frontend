@@ -28,6 +28,7 @@ const LoginPage = () => {
     fetch(`${API_URL}/account/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(data),
     })
       .then((res) => {

@@ -46,16 +46,16 @@ const TrendingPostCard = (props: Props) => {
         </Stack>
         <Stack direction="row" spacing={2} alignItems="center">
           <Avatar />
-          <div>
+          <Stack zIndex={1}>
             <TopicLink topicId={props.post.topicId} />
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" zIndex={1}>
               Posted by <UserLink userId={props.post.authorId} />, on{" "}
               {props.post.createdAt}.
               {props.post.updatedAt
                 ? ` Last updated on ${props.post.updatedAt}`
                 : ""}
             </Typography>
-          </div>
+          </Stack>
         </Stack>
       </div>
     </Card>

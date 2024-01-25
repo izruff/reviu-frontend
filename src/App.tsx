@@ -50,6 +50,10 @@ const theme = createTheme({
     body1: {
       fontSize: 16,
     },
+    body2: {
+      fontSize: 16,
+      color: "#1661c4",
+    }
   },
 });
 

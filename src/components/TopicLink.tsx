@@ -1,6 +1,6 @@
 import { API_URL } from "../constants";
 import { TopicType } from "../types/Topic";
-import { Card, Skeleton, Typography } from "@mui/material";
+import { Box, Card, Skeleton, Typography } from "@mui/material";
 import React from "react";
 
 type Props = {
@@ -45,7 +45,7 @@ export const TopicLink = (props: Props) => {
   }, []);
 
   return (
-    <>
+    <Box display="inline" zIndex={1}>
       <Typography
         display="inline"
         variant="h6"
@@ -55,6 +55,10 @@ export const TopicLink = (props: Props) => {
         onMouseOut={() => {
           setContentVisible(false);
         }}
+        sx={contentVisible ? {
+          color: "#1661c4",
+          textDecoration: "underline",
+        } : {}}
       >
         {topic ? (
           topic
@@ -62,15 +66,13 @@ export const TopicLink = (props: Props) => {
           <Skeleton width={80} sx={{ display: "inline-block" }} />
         )}
       </Typography>
-      {contentVisible && (
-        <Card sx={{ display: "relative" }}>
-          <Typography>{topicData ? topicData.topic : <Skeleton />}</Typography>
-          <Typography>{topicData ? topicData.hub : <Skeleton />}</Typography>
-          <Typography>
-            {topicData ? topicData.description : <Skeleton />}
-          </Typography>
-        </Card>
-      )}
-    </>
+      {contentVisible && <Card sx={{ position: "absolute", zIndex: 2, padding: 2 }}>
+        <Typography>{topicData ? topicData.topic : <Skeleton />}</Typography>
+        <Typography>{topicData ? topicData.hub : <Skeleton />}</Typography>
+        <Typography>
+          {topicData ? topicData.description : <Skeleton />}
+        </Typography>
+      </Card>}
+    </Box>
   );
 };

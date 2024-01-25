@@ -19,7 +19,7 @@ const CommentBody = (props: Props) => {
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar sx={{ width: 16, height: 16 }} />
-        <Typography variant="subtitle2">
+        <Typography variant="subtitle2" zIndex={1}>
           <UserLink userId={props.comment.authorId} />
         </Typography>
       </Stack>
