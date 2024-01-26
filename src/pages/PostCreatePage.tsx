@@ -37,11 +37,13 @@ const PostCreatePage = () => {
     fetch(`${API_URL}/authorized/posts/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         title: postTitle,
         content: postContent,
-        topicId: 1,
-        tags: [],
+        topic: postTopic,
+        hub: postHub,
+        tags: postTags,
       }),
     })
       .then((res) => {
