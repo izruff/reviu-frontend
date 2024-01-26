@@ -1,5 +1,5 @@
+import { TopicType } from "../types/Topic";
 import {
-  Box,
   Divider,
   MenuItem,
   Select,
@@ -13,7 +13,14 @@ import React from "react";
 const TopicSearchPage = () => {
   const [sortOption, setSortOption] = React.useState("similarity");
   const [mustMatchOption, setMustMatchOption] = React.useState("none");
-  const [topicSearchResults, setTopicSearchResults] = React.useState([]);
+  const [topicSearchResults, setTopicSearchResults] = React.useState<
+    TopicType[]
+  >([]);
+
+  React.useEffect(() => {
+    // TODO
+    setTopicSearchResults([]);
+  }, []);
 
   return (
     <>
@@ -62,7 +69,7 @@ const TopicSearchPage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {topicSearchResults.map((topic) => (
-          <Typography>This is a topic.</Typography>
+          <Typography key={topic.topicId}>This is a topic.</Typography>
         ))}
       </Stack>
     </>

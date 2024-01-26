@@ -20,7 +20,7 @@ export const TopicLink = (props: Props) => {
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then((data: { topic: string }) => {
         setTopic(data.topic);
       })
       .catch((error) => {
@@ -55,10 +55,14 @@ export const TopicLink = (props: Props) => {
         onMouseOut={() => {
           setContentVisible(false);
         }}
-        sx={contentVisible ? {
-          color: "#1661c4",
-          textDecoration: "underline",
-        } : {}}
+        sx={
+          contentVisible
+            ? {
+                color: "#1661c4",
+                textDecoration: "underline",
+              }
+            : {}
+        }
       >
         {topic ? (
           topic
@@ -66,13 +70,15 @@ export const TopicLink = (props: Props) => {
           <Skeleton width={80} sx={{ display: "inline-block" }} />
         )}
       </Typography>
-      {contentVisible && <Card sx={{ position: "absolute", zIndex: 2, padding: 2 }}>
-        <Typography>{topicData ? topicData.topic : <Skeleton />}</Typography>
-        <Typography>{topicData ? topicData.hub : <Skeleton />}</Typography>
-        <Typography>
-          {topicData ? topicData.description : <Skeleton />}
-        </Typography>
-      </Card>}
+      {contentVisible && (
+        <Card sx={{ position: "absolute", zIndex: 2, padding: 2 }}>
+          <Typography>{topicData ? topicData.topic : <Skeleton />}</Typography>
+          <Typography>{topicData ? topicData.hub : <Skeleton />}</Typography>
+          <Typography>
+            {topicData ? topicData.description : <Skeleton />}
+          </Typography>
+        </Card>
+      )}
     </Box>
   );
 };

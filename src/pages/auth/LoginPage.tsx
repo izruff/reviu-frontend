@@ -14,16 +14,13 @@ const LoginPage = () => {
   const [usernameOrEmail, setUsernameOrEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [usernameOrEmailErrStatus, setusernameOrEmailErrStatus] =
-    React.useState("");
-  const [passwordErrStatus, setPasswordStatus] = React.useState("");
+  React.useState("");
+  const [passwordErrStatus, setPasswordErrStatus] = React.useState("");
 
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    const data = {
-      usernameOrEmail: usernameOrEmail,
-      password: password,
-    };
+  function handleSubmit() {
+    const data = { usernameOrEmail, password };
 
     fetch(`${API_URL}/account/login`, {
       method: "POST",
@@ -31,16 +28,19 @@ const LoginPage = () => {
       credentials: "include",
       body: JSON.stringify(data),
     })
-      .then((res) => {
-        if (res.status === 401) {
-          throw new Error("invalid credentials");
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = (await res.json()) as { error: string }; // TODO: handle other types of error
+          throw new Error(data.error);
         }
+        navigate(-1);
       })
-      .catch((error) => {
+      .catch((error: Error) => {
+        // TODO: better error display
         console.log(error);
+        setusernameOrEmailErrStatus(error.message);
+        setPasswordErrStatus(error.message);
       });
-
-    navigate(-1);
   }
 
   return (

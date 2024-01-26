@@ -1,3 +1,4 @@
+import { UserType } from "../types/User";
 import {
   Divider,
   MenuItem,
@@ -12,7 +13,14 @@ import React from "react";
 const UserSearchPage = () => {
   const [sortOption, setSortOption] = React.useState("similarity");
   const [mustMatchOption, setMustMatchOption] = React.useState("none");
-  const [userSearchResults, setUserSearchResults] = React.useState([]);
+  const [userSearchResults, setUserSearchResults] = React.useState<UserType[]>(
+    [],
+  );
+
+  React.useEffect(() => {
+    // TODO
+    setUserSearchResults([]);
+  }, []);
 
   return (
     <>
@@ -61,7 +69,9 @@ const UserSearchPage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {userSearchResults.map((user) => (
-          <Typography>This is a user.</Typography>
+          <Typography key={user.username /* TODO */}>
+            This is a user.
+          </Typography>
         ))}
       </Stack>
     </>

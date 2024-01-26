@@ -1,20 +1,22 @@
+import noMoreContentImg from "../assets/no-more-content.png";
 import { API_URL } from "../constants";
 import PostBody from "../components/PostBody";
 import { CommentTreeType, CommentType } from "../types/Comment";
 import CommentTree from "../components/CommentTree";
 import { PostType } from "../types/Post";
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import noMoreContentImg from "../../public/no-more-content.png";
 
+/*
 type Props = {
   surfaceLevelLimit?: number;
   replyLimit?: number;
 };
+*/
 
 async function getReplies(postId: number, commentId: number) {
-  const data = await fetch(
+  const data = (await fetch(
     `${API_URL}/public/posts/id/${postId}/comments/id/${commentId}/replies`,
     {
       method: "GET",
@@ -27,7 +29,9 @@ async function getReplies(postId: number, commentId: number) {
     .catch((error) => {
       console.log(error);
       return [];
-    });
+    })) as CommentType[];
+
+  console.log(data);
 
   return data;
 }
@@ -49,7 +53,8 @@ async function getCommentTree(postId: number, comment: CommentType) {
   return commentTree;
 }
 
-const PostPage = (props: Props) => {
+const PostPage = () => {
+  // TODO: implement props functionality, that is, limit the comment count and make a "load more" button that gets a fixed number of additional comments
   const postIdParam = useParams().postId;
   const [postData, setPostData] = React.useState<PostType | null>(null);
   const [commentsData, setCommentsData] = React.useState<CommentTreeType[]>([]);
@@ -68,7 +73,7 @@ const PostPage = (props: Props) => {
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then((data: PostType) => {
         setPostData({
           postId: postId,
           title: data.title,
@@ -92,7 +97,7 @@ const PostPage = (props: Props) => {
       .then((res) => {
         return res.json();
       })
-      .then(async (data) => {
+      .then(async (data: CommentType[]) => {
         const commentTrees = await Promise.all(
           data.map(
             async (comment: CommentType) =>
@@ -108,22 +113,40 @@ const PostPage = (props: Props) => {
 
   return (
     <>
-      {postData !== null ? <>
-        <PostBody post={postData} />
-        <Typography variant="h4" marginTop={8} marginBottom={4}>
-          COMMENTS
-        </Typography>
-        {commentsData.length ? <>
-          {commentsData.map((commentTree) => (
-            <CommentTree commentTree={commentTree} rootLevel={0} />
-          ))}
-          <Typography variant="body2">Load more comments...</Typography>
-        </> : <Stack alignItems="center" spacing={2}>
-          <img src={noMoreContentImg} alt="No content." width={120} />
-          <Typography variant="body1">Looks like there are no comments yet...</Typography>
-          <Link to="/"><Typography variant="body2">Post a new comment.</Typography></Link>
-        </Stack>}
-      </> : <Stack alignItems="center"><CircularProgress /></Stack>}
+      {postData !== null ? (
+        <>
+          <PostBody post={postData} />
+          <Typography variant="h4" marginTop={8} marginBottom={4}>
+            COMMENTS
+          </Typography>
+          {commentsData.length ? (
+            <>
+              {commentsData.map((commentTree) => (
+                <CommentTree
+                  key={commentTree.parent.commentId}
+                  commentTree={commentTree}
+                  rootLevel={0}
+                />
+              ))}
+              <Typography variant="body2">Load more comments...</Typography>
+            </>
+          ) : (
+            <Stack alignItems="center" spacing={2}>
+              <img src={noMoreContentImg} alt="No content." width={120} />
+              <Typography variant="body1">
+                Looks like there are no comments yet...
+              </Typography>
+              <Link to="/">
+                <Typography variant="body2">Post a new comment.</Typography>
+              </Link>
+            </Stack>
+          )}
+        </>
+      ) : (
+        <Stack alignItems="center">
+          <CircularProgress />
+        </Stack>
+      )}
     </>
   );
 };

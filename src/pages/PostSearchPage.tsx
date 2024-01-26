@@ -1,14 +1,14 @@
 import { API_URL } from "../constants";
 import PostCard from "../components/PostCard";
+import { PostType } from "../types/Post";
 import React from "react";
 import { Divider, MenuItem, Select, Stack, Typography } from "@mui/material";
-import { useSubmit } from "react-router-dom";
 
 const PostSearchPage = () => {
-  const [postSearchResults, setPostSearchResults] = React.useState([]);
+  const [postSearchResults, setPostSearchResults] = React.useState<PostType[]>(
+    [],
+  );
   const [sortOption, setSortOption] = React.useState("age-asc");
-
-  const submit = useSubmit();
 
   React.useEffect(() => {
     fetch(`${API_URL}/public/posts/${window.location.search}`, {
@@ -18,7 +18,7 @@ const PostSearchPage = () => {
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then((data: PostType[]) => {
         setPostSearchResults(data);
       })
       .catch((error) => {
@@ -38,8 +38,8 @@ const PostSearchPage = () => {
           <Select
             id="sort-by"
             value={sortOption}
-            onChange={(event) => {
-              setSortOption(event.target.value); // TODO: automatically get new search results
+            onChange={(e) => {
+              setSortOption(e.target.value); // TODO: automatically get new search results
             }}
             displayEmpty
           >
@@ -57,7 +57,7 @@ const PostSearchPage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {postSearchResults.map((post) => (
-          <PostCard post={post} />
+          <PostCard key={post.postId} post={post} />
         ))}
       </Stack>
     </>

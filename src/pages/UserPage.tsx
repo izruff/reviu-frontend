@@ -9,14 +9,14 @@ const UserPage = () => {
   const [userData, setUserData] = React.useState<UserType | null>(null);
 
   React.useEffect(() => {
-    fetch(`${API_URL}/public/users/id/${userId}/?username=false`, {
+    fetch(`${API_URL}/public/users/name/${username}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then((data: UserType) => {
         setUserData(data);
       })
       .catch((error) => {

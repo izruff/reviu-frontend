@@ -1,14 +1,31 @@
+import { API_URL } from "../constants";
 import PostCard from "../components/PostCard";
 import TrendingPostCard from "../components/TrendingPostCard";
+import { PostType } from "../types/Post";
 import React from "react";
 import { Divider, Stack, Typography } from "@mui/material";
 
 const HomePage = () => {
-  const [trendingList, setTrendingList] = React.useState([]);
-  const [discoverList, setDiscoverList] = React.useState([]);
+  const [trendingList, setTrendingList] = React.useState<PostType[]>([]);
+  const [discoverList, setDiscoverList] = React.useState<PostType[]>([]);
 
   React.useEffect(() => {
-    // TODO
+    fetch(`${API_URL}/public/posts/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data: PostType[]) => {
+        // Discover list should be have a "infinite scroll" feature which gets 15 more posts every time the user scrolls to the bottom, but this is not yet implemented so we will display all posts instead
+        // Trending list should be sorted from popularity (vote/comment count) and limited to 10 posts; as this is not yet implemented, we will use the same data as the discover list
+        setTrendingList(data);
+        setDiscoverList(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
@@ -26,7 +43,7 @@ const HomePage = () => {
         }}
       >
         {trendingList.map((post) => (
-          <TrendingPostCard post={post} />
+          <TrendingPostCard key={post.postId} post={post} />
         ))}
       </Stack>
 
@@ -39,7 +56,7 @@ const HomePage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {discoverList.map((post) => (
-          <PostCard post={post} />
+          <PostCard key={post.postId} post={post} />
         ))}
       </Stack>
     </>

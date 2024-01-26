@@ -1,21 +1,15 @@
-import { Box, Card, Chip, InputBase, Stack, Typography } from "@mui/material";
+import { Card, InputBase, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [placeholder, setPlaceholder] = React.useState("");
-  const [selectedTopics, setSelectedTopics] = React.useState([]);
-  const [selectedTags, setSelectedTags] = React.useState([]);
+  const [selectedTopics, setSelectedTopics] = React.useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
 
-  function handleSearchTermChange(event) {
-    setSearchTerm(event.target.value);
-  }
-
-  function handleKeyDown(event) {
-    if (event.key === "Enter") {
-    }
-  }
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const placeholders = [
@@ -26,6 +20,10 @@ const SearchBar = () => {
       "Search for newly released PC games...",
     ];
     setPlaceholder(placeholders[Math.floor(Math.random() * 5)]);
+
+    // placeholder; adding topics and tags filter not yet implemented
+    setSelectedTopics(["test-topic"]);
+    setSelectedTags(["test-tag-one", "test-tag-two"]);
   }, []);
 
   return (
@@ -51,8 +49,24 @@ const SearchBar = () => {
           fullWidth
           placeholder={placeholder}
           value={searchTerm}
-          onChange={handleSearchTermChange}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            // TODO: detect when user wants to add topic/tag filter
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate(
+                "/posts?q=" +
+                  encodeURIComponent(searchTerm) +
+                  selectedTopics
+                    .map((topic) => "&topics=" + encodeURIComponent(topic))
+                    .join("") +
+                  selectedTags
+                    .map((tag) => "&tags=" + encodeURIComponent(tag))
+                    .join(""),
+              );
+            }
+          }}
         />
       </Stack>
     </Card>
