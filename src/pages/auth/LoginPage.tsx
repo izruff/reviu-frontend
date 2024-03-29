@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [usernameOrEmail, setUsernameOrEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [usernameOrEmailErrStatus, setusernameOrEmailErrStatus] =
-  React.useState("");
+    React.useState("");
   const [passwordErrStatus, setPasswordErrStatus] = React.useState("");
 
   const navigate = useNavigate();

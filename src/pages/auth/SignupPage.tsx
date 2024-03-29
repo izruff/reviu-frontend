@@ -26,7 +26,7 @@ const SignupPage = () => {
     setEmailErrStatus(V.validateEmail(email));
     setUsernameErrStatus(V.validateUsername(username));
     setPasswordErrStatus(V.validatePassword(password));
-  }, [email, username, password])
+  }, [email, username, password]);
 
   function handleSubmit() {
     const data = { email, username, password };
