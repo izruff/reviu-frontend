@@ -45,7 +45,7 @@ const PostCard = (props: Props) => {
             There should be some buttons here.
           </Typography>
           <Avatar sx={{ width: 24, height: 24 }} />
-          <Typography variant="subtitle2" zIndex={1}>
+          <Typography variant="subtitle2">
             Posted by <UserLink userId={props.post.authorId} />, on{" "}
             {props.post.createdAt}.
           </Typography>

@@ -46,9 +46,9 @@ const TrendingPostCard = (props: Props) => {
         </Stack>
         <Stack direction="row" spacing={2} alignItems="center">
           <Avatar />
-          <Stack zIndex={1}>
+          <Stack>
             <TopicLink topicId={props.post.topicId} />
-            <Typography variant="subtitle2" zIndex={1}>
+            <Typography variant="subtitle2">
               Posted by <UserLink userId={props.post.authorId} />, on{" "}
               {props.post.createdAt}.
               {props.post.updatedAt
