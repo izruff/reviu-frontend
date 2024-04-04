@@ -27,7 +27,8 @@
   ],
   "ignorePatterns": [
     "src/vite-env.d.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "commitlint.config.js"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
