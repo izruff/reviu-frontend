@@ -1,4 +1,5 @@
 import { API_URL } from "../constants";
+import PostEditor from "../components/editor/PostEditor";
 import {
   Box,
   Button,
@@ -126,7 +127,7 @@ const PostCreatePage = () => {
         </Box>
         <Divider />
         <Box p={2}>
-          <InputBase // TODO: current implementation cannot have multiple lines
+          <InputBase // TODO: remove this and replace its related logics
             fullWidth
             placeholder="Insert your post contents here..."
             value={postContent}
@@ -134,6 +135,7 @@ const PostCreatePage = () => {
               setPostContent(e.target.value);
             }}
           />
+          <PostEditor />
         </Box>
       </Card>
       <Stack direction="row" spacing={2} justifyContent="flex-end">
