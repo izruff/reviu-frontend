@@ -8,7 +8,9 @@ const PostEditor = (props: PostEditorProps) => {
         namespace: "postEditor",
         onError: (error, editor) => {},
       }}
-      onChange={(editorState, editor, tags) => {}}
+      onChange={(editorState, editor, tags) => {
+        props.editorStateRef.current = editorState;
+      }}
     />
   );
 };

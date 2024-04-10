@@ -15,11 +15,19 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  EditorState,
+  ElementNode,
+  LexicalNode,
+  SerializedElementNode,
+  SerializedLexicalNode,
+  SerializedRootNode,
+} from "lexical";
 
 const PostCreatePage = () => {
   const [postTitle, setPostTitle] = React.useState("");
-  const [postContent, setPostContent] = React.useState("");
   const [postTopic, setPostTopic] = React.useState("");
+  const [postTextOnlyContent, setPostTextOnlyContent] = React.useState("");
   const [postHub, setPostHub] = React.useState("");
   const [postTags, setPostTags] = React.useState([
     "some",
@@ -28,6 +36,9 @@ const PostCreatePage = () => {
     "shown",
   ]);
 
+  const editorStateRef: React.MutableRefObject<EditorState | null> =
+    React.useRef(null);
+
   const navigate = useNavigate();
 
   function handleTagDelete(tagToDelete: string) {
@@ -35,13 +46,20 @@ const PostCreatePage = () => {
   }
 
   function handleCreatePost() {
+    if (editorStateRef.current === null) {
+      throw new Error("Cannot find editor state"); // TODO: error handling
+    }
+
+    const rootNode = editorStateRef.current.toJSON().root;
+    const postTextOnlyContent = extractTextFromLexicalNode(rootNode);
+
     fetch(`${API_URL}/authorized/posts/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
         title: postTitle,
-        content: postContent,
+        content: postTextOnlyContent,
         topic: postTopic,
         hub: postHub,
         tags: postTags,
@@ -63,6 +81,26 @@ const PostCreatePage = () => {
           console.log(error);
         }
       });
+  }
+
+  function extractTextFromLexicalNode(node: SerializedLexicalNode): string {
+    // TODO: this is probably a temporary solution, and not a strictly correct implementation
+    if (node.children === undefined) {
+      switch (node.type) {
+        case "text":
+          return node.text;
+        case "linebreak":
+          return "\n";
+        default:
+          return "";
+      }
+    } else {
+      let text = "";
+      for (const childNode of node.children) {
+        text += extractTextFromLexicalNode(childNode);
+      }
+      return text;
+    }
   }
 
   return (
@@ -127,15 +165,7 @@ const PostCreatePage = () => {
         </Box>
         <Divider />
         <Box p={2}>
-          <InputBase // TODO: remove this and replace its related logics
-            fullWidth
-            placeholder="Insert your post contents here..."
-            value={postContent}
-            onChange={(e) => {
-              setPostContent(e.target.value);
-            }}
-          />
-          <PostEditor />
+          <PostEditor editorStateRef={editorStateRef} />
         </Box>
       </Card>
       <Stack direction="row" spacing={2} justifyContent="flex-end">

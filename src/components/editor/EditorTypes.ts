@@ -1,5 +1,6 @@
 import { InitialConfigType } from "@lexical/react/LexicalComposer";
 import { EditorState, LexicalEditor } from "lexical";
+import React from "react";
 
 export type EditorProps = {
   initialConfig: InitialConfigType;
@@ -10,4 +11,6 @@ export type EditorProps = {
   ) => void;
 };
 
-export type PostEditorProps = unknown;
+export type PostEditorProps = {
+  editorStateRef: React.MutableRefObject<EditorState | null>;
+};
