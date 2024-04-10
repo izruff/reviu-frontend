@@ -15,14 +15,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  EditorState,
-  ElementNode,
-  LexicalNode,
-  SerializedElementNode,
-  SerializedLexicalNode,
-  SerializedRootNode,
-} from "lexical";
+import { EditorState, SerializedLexicalNode } from "lexical";
 
 const PostCreatePage = () => {
   const [postTitle, setPostTitle] = React.useState("");
@@ -83,12 +76,18 @@ const PostCreatePage = () => {
       });
   }
 
-  function extractTextFromLexicalNode(node: SerializedLexicalNode): string {
+  function extractTextFromLexicalNode(
+    node: SerializedLexicalNode & {
+      children?: SerializedLexicalNode[];
+      text?: string;
+    },
+  ): string {
     // TODO: this is probably a temporary solution, and not a strictly correct implementation
+    // TODO: better type-checking
     if (node.children === undefined) {
       switch (node.type) {
         case "text":
-          return node.text;
+          return node.text ?? "";
         case "linebreak":
           return "\n";
         default:
