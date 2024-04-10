@@ -39,12 +39,7 @@ const PostCreatePage = () => {
   }
 
   function handleCreatePost() {
-    if (editorStateRef.current === null) {
-      throw new Error("Cannot find editor state"); // TODO: error handling
-    }
-
-    const rootNode = editorStateRef.current.toJSON().root;
-    const postTextOnlyContent = extractTextFromLexicalNode(rootNode);
+    updatePostTextOnlyContent();
 
     fetch(`${API_URL}/authorized/posts/create`, {
       method: "POST",
@@ -74,6 +69,16 @@ const PostCreatePage = () => {
           console.log(error);
         }
       });
+  }
+
+  function updatePostTextOnlyContent() {
+    if (editorStateRef.current === null) {
+      throw new Error("Cannot find editor state"); // TODO: error handling
+    }
+
+    const rootNode = editorStateRef.current.toJSON().root;
+    const text = extractTextFromLexicalNode(rootNode);
+    setPostTextOnlyContent(text);
   }
 
   function extractTextFromLexicalNode(
