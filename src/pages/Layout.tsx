@@ -20,7 +20,7 @@ const Layout = () => {
   const navigate = useNavigate();
 
   const shortcutActions = [
-    { icon: <CreateRounded />, name: "Create new post", path: "posts/create" },
+    { icon: <CreateRounded />, name: "Create new post", path: "/posts/create" },
   ];
 
   return (
