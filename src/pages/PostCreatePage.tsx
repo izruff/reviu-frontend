@@ -1,5 +1,5 @@
 import { API_URL } from "../constants";
-import PostEditor from "../components/editor/PostEditor";
+import PlainTextPostEditor from "../components/editor/PlainTextEditor";
 import {
   Box,
   Button,
@@ -15,12 +15,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { EditorState, SerializedLexicalNode } from "lexical";
 
 const PostCreatePage = () => {
   const [postTitle, setPostTitle] = React.useState("");
   const [postTopic, setPostTopic] = React.useState("");
-  const [postTextOnlyContent, setPostTextOnlyContent] = React.useState("");
+  const [postContent, setPostContent] = React.useState("");
   const [postHub, setPostHub] = React.useState("");
   const [postTags, setPostTags] = React.useState([
     "some",
@@ -29,9 +28,6 @@ const PostCreatePage = () => {
     "shown",
   ]);
 
-  const editorStateRef: React.MutableRefObject<EditorState | null> =
-    React.useRef(null);
-
   const navigate = useNavigate();
 
   function handleTagDelete(tagToDelete: string) {
@@ -39,15 +35,13 @@ const PostCreatePage = () => {
   }
 
   function handleCreatePost() {
-    updatePostTextOnlyContent();
-
     fetch(`${API_URL}/authorized/posts/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
         title: postTitle,
-        content: postTextOnlyContent,
+        content: postContent,
         topic: postTopic,
         hub: postHub,
         tags: postTags,
@@ -69,42 +63,6 @@ const PostCreatePage = () => {
           console.log(error);
         }
       });
-  }
-
-  function updatePostTextOnlyContent() {
-    if (editorStateRef.current === null) {
-      throw new Error("Cannot find editor state"); // TODO: error handling
-    }
-
-    const rootNode = editorStateRef.current.toJSON().root;
-    const text = extractTextFromLexicalNode(rootNode);
-    setPostTextOnlyContent(text);
-  }
-
-  function extractTextFromLexicalNode(
-    node: SerializedLexicalNode & {
-      children?: SerializedLexicalNode[];
-      text?: string;
-    },
-  ): string {
-    // TODO: this is probably a temporary solution, and not a strictly correct implementation
-    // TODO: better type-checking
-    if (node.children === undefined) {
-      switch (node.type) {
-        case "text":
-          return node.text ?? "";
-        case "linebreak":
-          return "\n";
-        default:
-          return "";
-      }
-    } else {
-      let text = "";
-      for (const childNode of node.children) {
-        text += extractTextFromLexicalNode(childNode);
-      }
-      return text;
-    }
   }
 
   return (
@@ -169,7 +127,11 @@ const PostCreatePage = () => {
         </Box>
         <Divider />
         <Box p={2}>
-          <PostEditor editorStateRef={editorStateRef} />
+          <PlainTextPostEditor
+            onChange={(content) => {
+              setPostContent(content);
+            }}
+          />
         </Box>
       </Card>
       <Stack direction="row" spacing={2} justifyContent="flex-end">
