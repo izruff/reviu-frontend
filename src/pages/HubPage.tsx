@@ -1,9 +1,11 @@
+import { HubItem } from "../constants";
+
 type Props = {
-  hub: string;
+  hub: HubItem;
 };
 
 const HubPage = ({ hub }: Props) => {
-  return <div>This is the {hub} hub page.</div>;
+  return <div>This is the {hub.title} hub page.</div>;
 };
 
 export default HubPage;

@@ -61,7 +61,9 @@ function validateTopic(topic: string): string {
 }
 
 function validateHub(hub: string): string {
-  return HUBS.includes(hub) ? "" : "Hub does not exist.";
+  return HUBS.filter((item) => item.key === hub).length
+    ? ""
+    : "Hub does not exist.";
 }
 
 function validateTag(tag: string): string {

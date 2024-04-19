@@ -19,9 +19,9 @@ export const appRoutes = [
   {
     element: <Layout />,
     children: [
-      ...HUBS.map((hub) => ({
-        path: "/" + hub,
-        element: <HubPage hub={hub} />,
+      ...HUBS.map((item) => ({
+        path: "/" + item.key,
+        element: <HubPage hub={item} />,
       })),
       {
         path: "/users",

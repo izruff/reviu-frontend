@@ -1,4 +1,4 @@
-import { API_URL } from "../constants";
+import { API_URL, HUBS } from "../constants";
 import PlainTextPostEditor from "../components/editor/PlainTextEditor";
 import {
   Box,
@@ -91,11 +91,11 @@ const PostCreatePage = () => {
                   setPostHub(e.target.value); // TODO: automatically get new search results
                 }}
               >
-                <MenuItem value="books">Books</MenuItem>
-                <MenuItem value="movies">Movies</MenuItem>
-                <MenuItem value="series">Series</MenuItem>
-                <MenuItem value="anime">Anime</MenuItem>
-                <MenuItem value="gaming">Gaming</MenuItem>
+                {HUBS.map((item) => (
+                  <MenuItem key={item.key} value={item.key}>
+                    {item.title}
+                  </MenuItem>
+                ))}
               </Select>
             </Stack>
             <Typography variant="subtitle2">
