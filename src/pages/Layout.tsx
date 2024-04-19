@@ -69,23 +69,23 @@ const Layout = () => {
       <Toolbar />
       <Container sx={{ paddingY: 8 }}>
         <Outlet />
-        <SpeedDial
-          ariaLabel="Shortcuts"
-          sx={{ position: "absolute", bottom: 48, right: 48 }}
-          icon={<SpeedDialIcon />}
-        >
-          {shortcutActions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              FabProps={{
-                href: action.path,
-              }}
-            />
-          ))}
-        </SpeedDial>
       </Container>
+      <SpeedDial
+        ariaLabel="Shortcuts"
+        sx={{ position: "fixed", bottom: 48, right: 48 }}
+        icon={<SpeedDialIcon />}
+      >
+        {shortcutActions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            FabProps={{
+              href: action.path,
+            }}
+          />
+        ))}
+      </SpeedDial>
     </>
   );
 };
