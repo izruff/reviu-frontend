@@ -13,7 +13,7 @@ export const HUBS: HubItem[] = [
     description: "Description",
   },
   {
-    key: "books",
+    key: "movies",
     title: "Movies",
     description: "Description",
   },
