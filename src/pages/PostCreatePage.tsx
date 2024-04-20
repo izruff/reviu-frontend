@@ -6,7 +6,9 @@ import {
   Card,
   Chip,
   Divider,
+  FormControl,
   InputBase,
+  InputLabel,
   MenuItem,
   Select,
   Stack,
@@ -67,6 +69,7 @@ const TagChips = (props: TagChipsProps) => {
             <InputBase
               placeholder="ex: my-own-tag"
               value={newTagValue}
+              style={{fontSize: 13}}
               onChange={(e) => {
                 setNewTagValue(e.target.value);
               }}
@@ -142,42 +145,47 @@ const PostCreatePage = () => {
       <Card variant="outlined">
         <Box p={2}>
           <Stack direction="row" justifyContent="space-between">
-            <Stack direction="row" spacing={4}>
-              <Typography variant="subtitle2">Topic:</Typography>
+            <Stack direction="row" spacing={2}>
               <TextField // TODO: implement autocomplete dropdown
                 id="topic"
+                label="Topic"
                 value={postTopic}
                 placeholder="Select a topic..."
+                size="small"
                 onChange={(e) => {
                   setPostTopic(e.target.value);
                 }}
               ></TextField>
-              <Typography variant="subtitle2">Hub:</Typography>
-              <Select
-                id="hub"
-                value={postHub}
-                onChange={(e) => {
-                  setPostHub(e.target.value); // TODO: automatically get new search results
-                }}
-              >
-                {HUBS.map((item) => (
-                  <MenuItem key={item.key} value={item.key}>
-                    {item.title}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl fullWidth size="small">
+                <InputLabel>Age</InputLabel>
+                <Select
+                  id="hub"
+                  label="Hubsorbgoiwrs"
+                  value={postHub}
+                  onChange={(e) => {
+                    setPostHub(e.target.value); // TODO: automatically get new search results
+                  }}
+                >
+                  {HUBS.map((item) => (
+                    <MenuItem key={item.key} value={item.key}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Stack>
             <Typography variant="subtitle2">
               Logged in as ... (Not you?)
             </Typography>
           </Stack>
-          <Stack direction="row" spacing={1} marginY={1}>
+          <Stack direction="row" spacing={1} marginY={2} flexWrap="wrap" >
             <TagChips postTags={postTags} />
           </Stack>
           <InputBase
             fullWidth
             placeholder="Title"
             value={postTitle}
+            sx={{fontSize: 24, fontWeight: 600}}
             onChange={(e) => {
               setPostTitle(e.target.value);
             }}
