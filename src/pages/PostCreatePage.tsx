@@ -13,26 +13,95 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+type TagChipsProps = {
+  postTags: Set<string>;
+};
+
+const TagChips = (props: TagChipsProps) => {
+  const [isEditingNewTag, setIsEditingNewTag] = React.useState(false);
+  const [newTagValue, setNewTagValue] = React.useState("");
+
+  function handleAddButtonClick() {
+    setIsEditingNewTag(true);
+  }
+
+  function handleAddTag() {
+    if (!isEditingNewTag) {
+      return;
+    }
+
+    props.postTags.add(newTagValue);
+    setIsEditingNewTag(false);
+    setNewTagValue("");
+  }
+
+  function handleDeleteTag(tagToDelete: string) {
+    props.postTags.delete(tagToDelete);
+  }
+
+  function handleCancelAddingTag() {
+    setIsEditingNewTag(false);
+  }
+
+  return (
+    <>
+      {Array.from(props.postTags).map((tag) => (
+        <Chip
+          key={tag}
+          size="small"
+          label={tag}
+          variant="filled"
+          onDelete={() => {
+            handleDeleteTag(tag);
+          }}
+        />
+      ))}
+      {isEditingNewTag ? (
+        <Chip
+          size="small"
+          label={
+            <InputBase
+              placeholder="ex: my-own-tag"
+              value={newTagValue}
+              onChange={(e) => {
+                setNewTagValue(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleAddTag();
+                }
+              }}
+              // TODO: autofocus on input once add button is clicked
+            />
+          }
+          variant="outlined"
+          onDelete={handleCancelAddingTag}
+        />
+      ) : (
+        <Chip
+          size="small"
+          avatar={<AddIcon />}
+          label="Add tags..."
+          variant="outlined"
+          onClick={handleAddButtonClick}
+        />
+      )}
+    </>
+  );
+};
 
 const PostCreatePage = () => {
   const [postTitle, setPostTitle] = React.useState("");
   const [postTopic, setPostTopic] = React.useState("");
   const [postContent, setPostContent] = React.useState("");
   const [postHub, setPostHub] = React.useState("");
-  const [postTags, setPostTags] = React.useState([
-    "some",
-    "tags",
-    "being",
-    "shown",
-  ]);
+  const [postTags] = React.useState<Set<string>>(new Set());
 
   const navigate = useNavigate();
-
-  function handleTagDelete(tagToDelete: string) {
-    setPostTags((postTags) => postTags.filter((tag) => tag !== tagToDelete));
-  }
 
   function handleCreatePost() {
     fetch(`${API_URL}/authorized/posts/create`, {
@@ -103,17 +172,7 @@ const PostCreatePage = () => {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1} marginY={1}>
-            {postTags.map((tag) => (
-              <Chip
-                key={tag}
-                size="small"
-                label={tag}
-                variant="filled"
-                onDelete={() => {
-                  handleTagDelete(tag);
-                }}
-              />
-            ))}
+            <TagChips postTags={postTags} />
           </Stack>
           <InputBase
             fullWidth
