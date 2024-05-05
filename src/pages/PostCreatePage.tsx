@@ -116,7 +116,7 @@ const PostCreatePage = () => {
         content: postContent,
         topic: postTopic,
         hub: postHub,
-        tags: postTags,
+        tags: Array.from(postTags),
       }),
     })
       .then((res) => {
@@ -157,10 +157,10 @@ const PostCreatePage = () => {
                 }}
               ></TextField>
               <FormControl fullWidth size="small">
-                <InputLabel>Age</InputLabel>
+                <InputLabel>Hub</InputLabel>
                 <Select
                   id="hub"
-                  label="Hubsorbgoiwrs"
+                  label="Hub"
                   value={postHub}
                   onChange={(e) => {
                     setPostHub(e.target.value); // TODO: automatically get new search results
