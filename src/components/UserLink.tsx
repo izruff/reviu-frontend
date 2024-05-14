@@ -1,6 +1,6 @@
 import { API_URL } from "../constants";
 import { UserType } from "../types/User";
-import { Card, Skeleton, Typography } from "@mui/material";
+import { Card, Link, Popper, Skeleton, Typography } from "@mui/material";
 import React from "react";
 
 type Props = {
@@ -10,7 +10,9 @@ type Props = {
 export const UserLink = (props: Props) => {
   const [username, setUsername] = React.useState("");
   const [userData, setUserData] = React.useState<UserType | null>(null);
-  const [contentVisible, setContentVisible] = React.useState(false);
+
+  const [popperAnchorEl, setPopperAnchorEl] =
+    React.useState<HTMLElement | null>(null);
 
   React.useEffect(() => {
     fetch(`${API_URL}/public/users/id/${props.userId}/?username=true`, {
@@ -46,32 +48,26 @@ export const UserLink = (props: Props) => {
 
   return (
     <>
-      <Typography
-        display="inline"
-        variant="h6"
-        onMouseOver={() => {
-          setContentVisible(true);
-        }}
-        onMouseOut={() => {
-          setContentVisible(false);
-        }}
-        sx={
-          contentVisible
-            ? {
-                color: "#1661c4",
-                textDecoration: "underline",
-              }
-            : {}
-        }
-      >
-        {username ? (
-          username
-        ) : (
-          <Skeleton width={80} sx={{ display: "inline-block" }} />
-        )}
-      </Typography>
-      {contentVisible && (
-        <Card sx={{ position: "absolute", zIndex: 2, padding: 2 }}>
+      {username != "" ? (
+        <Link
+          display="inline"
+          variant="h6"
+          color="inherit"
+          underline="hover"
+          onMouseOver={(e) => {
+            setPopperAnchorEl(e.currentTarget);
+          }}
+          onMouseOut={() => {
+            setPopperAnchorEl(null);
+          }}
+        >
+          {username}
+        </Link>
+      ) : (
+        <Skeleton width={80} sx={{ display: "inline-block" }} />
+      )}
+      <Popper open={popperAnchorEl !== null} anchorEl={popperAnchorEl}>
+        <Card sx={{ padding: 2 }} raised>
           <Typography>{userData ? userData.username : <Skeleton />}</Typography>
           <Typography>{userData ? userData.nickname : <Skeleton />}</Typography>
           <Typography>{userData ? userData.about : <Skeleton />}</Typography>
@@ -89,7 +85,7 @@ export const UserLink = (props: Props) => {
           </Typography>
           <Typography>{userData ? userData.rating : <Skeleton />}</Typography>
         </Card>
-      )}
+      </Popper>
     </>
   );
 };

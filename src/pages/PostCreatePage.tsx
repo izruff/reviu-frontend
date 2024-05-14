@@ -69,7 +69,7 @@ const TagChips = (props: TagChipsProps) => {
             <InputBase
               placeholder="ex: my-own-tag"
               value={newTagValue}
-              style={{fontSize: 13}}
+              style={{ fontSize: 13 }}
               onChange={(e) => {
                 setNewTagValue(e.target.value);
               }}
@@ -178,14 +178,14 @@ const PostCreatePage = () => {
               Logged in as ... (Not you?)
             </Typography>
           </Stack>
-          <Stack direction="row" spacing={1} marginY={2} flexWrap="wrap" >
+          <Stack direction="row" spacing={1} marginY={2} flexWrap="wrap">
             <TagChips postTags={postTags} />
           </Stack>
           <InputBase
             fullWidth
             placeholder="Title"
             value={postTitle}
-            sx={{fontSize: 24, fontWeight: 600}}
+            sx={{ fontSize: 24, fontWeight: 600 }}
             onChange={(e) => {
               setPostTitle(e.target.value);
             }}
