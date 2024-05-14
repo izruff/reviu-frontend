@@ -50,6 +50,7 @@ export const UserLink = (props: Props) => {
     <>
       {username != "" ? (
         <Link
+          href={`/users/${username}`}
           display="inline"
           variant="h6"
           color="inherit"

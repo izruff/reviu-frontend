@@ -51,6 +51,7 @@ export const TopicLink = (props: Props) => {
     <>
       {topic != "" ? (
         <Link
+          href={`/topics/${props.topicId}`}
           display="inline"
           variant="h6"
           color="inherit"
