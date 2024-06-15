@@ -1,10 +1,6 @@
-import { appRoutes } from "./routes/appRoutes";
-import { ThemeProvider, createTheme } from "@mui/material";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { createTheme } from "@mui/material";
 
-const router = createBrowserRouter(appRoutes);
-
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: "#1a73e8",
@@ -56,15 +52,3 @@ const theme = createTheme({
     },
   },
 });
-
-const App = () => {
-  return (
-    <div className="App">
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </div>
-  );
-};
-
-export default App;
