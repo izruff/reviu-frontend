@@ -5,22 +5,35 @@ export interface AuthState {
   userData: {
     username: string;
   } | null;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   userData: null,
+  loading: false,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    updateUserData: (state, action: PayloadAction<AuthState["userData"]>) => {
+    getUserData: (state) => {
+      state.loading = true;
+    },
+    getUserDataSuccess: (
+      state,
+      action: PayloadAction<AuthState["userData"]>,
+    ) => {
       state.userData = action.payload;
+      state.loading = false;
+    },
+    getUserDataFailure: (state) => {
+      state.loading = false;
     },
   },
 });
 
-export const { updateUserData } = authSlice.actions;
+export const { getUserData, getUserDataSuccess, getUserDataFailure } =
+  authSlice.actions;
 
 export default authSlice.reducer;
