@@ -147,7 +147,7 @@ const PostBody = (props: Props) => {
                     handleSubmitReply(replyContent, props.post.postId)
                       .then(({ status, data }) => {
                         if (status === "success") {
-                          navigate(`/comment/${data?.commentId}`);
+                          navigate(`/comments/${data?.commentId}`);
                         } else if (status === "unauthorized") {
                           navigate("/login");
                         } else if (status === "error") {

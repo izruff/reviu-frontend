@@ -1,19 +1,16 @@
-import { userRoutes } from "./userRoutes";
-import { postRoutes } from "./postRoutes";
-import { topicRoutes } from "./topicRoutes";
+import { accountRoutes } from "./accountRoutes";
+import { usersRoutes } from "./usersRoutes";
+import { postsRoutes } from "./postsRoutes";
+import { commentsRoutes } from "./commentsRoutes";
+import { topicsRoutes } from "./topicsRoutes";
+import { moderatorRoutes } from "./moderatorRoutes";
 import { HUBS } from "../constants";
 import Layout from "../pages/Layout";
 import HomePage from "../pages/HomePage";
 import HubPage from "../pages/HubPage";
-import UserSearchPage from "../pages/UserSearchPage";
-import TopicSearchPage from "../pages/TopicSearchPage";
-import PostSearchPage from "../pages/PostSearchPage";
-import PostCreatePage from "../pages/PostCreatePage";
-import SignupPage from "../pages/auth/SignupPage";
-import LoginPage from "../pages/auth/LoginPage";
-import RecoverPage from "../pages/auth/RecoverPage";
 import ErrNotFoundPage from "../pages/errors/ErrNotFoundPage";
 import ErrUnknownPage from "../pages/errors/ErrUnknownPage";
+
 
 export const appRoutes = [
   {
@@ -25,34 +22,23 @@ export const appRoutes = [
       })),
       {
         path: "/users",
-        element: <UserSearchPage />,
-      },
-      {
-        path: "/users/:username",
-        children: userRoutes,
+        children: usersRoutes,
       },
       {
         path: "/posts",
-        element: <PostSearchPage />,
+        children: postsRoutes,
       },
       {
-        path: "/posts/create",
-        element: <PostCreatePage />,
-      },
-      {
-        path: "/posts/:postId",
-        children: postRoutes,
+        path: "/comments",
+        children: commentsRoutes,
       },
       {
         path: "/topics",
-        element: <TopicSearchPage />,
-      },
-      {
-        path: "/topics/:topicId",
-        children: topicRoutes,
+        children: topicsRoutes,
       },
       {
         path: "/moderator",
+        children: moderatorRoutes,
       },
       {
         path: "/",
@@ -62,16 +48,8 @@ export const appRoutes = [
     errorElement: <ErrUnknownPage />,
   },
   {
-    path: "/signup",
-    element: <SignupPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/recover",
-    element: <RecoverPage />,
+    path: "/",
+    children: accountRoutes,
   },
   {
     path: "*",

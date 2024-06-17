@@ -1,16 +1,12 @@
 import TestPage from "../pages/TestPage";
 
-export const moderatorRoutes = [
+export const commentsRoutes = [
   {
     index: true,
     element: <TestPage />,
   },
   {
-    path: "ban",
+    path: ":commentId",
     element: <TestPage />,
-  },
-  {
-    path: "delete",
-    element: <TestPage />,
-  },
+  }
 ];
