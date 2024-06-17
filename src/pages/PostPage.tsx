@@ -4,17 +4,9 @@ import PostBody from "../components/PostBody";
 import { CommentTreeType, CommentType } from "../types/Comment";
 import CommentTree from "../components/CommentTree";
 import { PostType } from "../types/Post";
-import PlainTextEditor from "../components/editor/PlainTextEditor";
-import {
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 /*
 type Props = {
@@ -38,8 +30,6 @@ async function getReplies(postId: number, commentId: number) {
       console.log(error);
       return [];
     })) as CommentType[];
-
-  console.log(data);
 
   return data;
 }
@@ -67,41 +57,9 @@ const PostPage = () => {
   const [postData, setPostData] = React.useState<PostType | null>(null);
   const [commentsData, setCommentsData] = React.useState<CommentTreeType[]>([]);
 
-  const [replyContent, setReplyContent] = React.useState("");
-
-  const navigate = useNavigate();
-
   const postId = Number(postIdParam);
   if (isNaN(postId)) {
     throw new Error("invalid post ID format");
-  }
-
-  function handleSubmitReply() {
-    fetch(`${API_URL}/authorized/posts/id/${postId}/reply`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        content: replyContent,
-        postId,
-      }),
-    })
-      .then((res) => {
-        if (res.status == 401) {
-          throw new Error("401");
-        }
-        return res.json();
-      })
-      .then((data: { commentId: number }) => {
-        navigate(`/posts/${postId}/comment/${data.commentId}`);
-      })
-      .catch((error: Error) => {
-        if (error.message == "401") {
-          navigate("/login");
-        } else {
-          console.log(error);
-        }
-      });
   }
 
   // Get post body
@@ -180,21 +138,6 @@ const PostPage = () => {
               </Stack>
             </>
           )}
-          <Typography variant="body1">Reply to This Post</Typography>
-          <Card variant="outlined">
-            <Box p={2}>
-              <PlainTextEditor
-                onChange={(content) => {
-                  setReplyContent(content);
-                }}
-              />
-              <Stack direction="row" spacing={2} justifyContent="flex-end">
-                <Button variant="contained" onClick={handleSubmitReply}>
-                  Create
-                </Button>
-              </Stack>
-            </Box>
-          </Card>
         </>
       ) : (
         <Stack alignItems="center">
