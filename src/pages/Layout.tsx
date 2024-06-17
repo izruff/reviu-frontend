@@ -22,12 +22,25 @@ import {
   SpeedDialAction,
   Avatar,
   Skeleton,
+  Menu,
+  MenuItem,
+  Divider,
+  Popover,
 } from "@mui/material";
-import { CreateRounded, Menu as MenuIcon } from "@mui/icons-material";
+import {
+  CreateRounded,
+  Menu as MenuIcon,
+  Notifications,
+} from "@mui/icons-material";
 import { Outlet, useNavigate } from "react-router-dom";
 import React from "react";
 
 const Layout = () => {
+  const [profileAnchorEl, setProfileAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+
   const navigate = useNavigate();
 
   const shortcutActions = [
@@ -105,7 +118,67 @@ const Layout = () => {
                 <Skeleton variant="rectangular" height={36} />
               ) : userData ? (
                 <>
-                  <Avatar sx={{ width: 36, height: 36 }} />
+                  <IconButton
+                    onClick={(event) => {
+                      setNotificationAnchorEl(event.currentTarget);
+                    }}
+                  >
+                    <Notifications />
+                  </IconButton>
+                  <IconButton
+                    onClick={(event) => {
+                      setProfileAnchorEl(event.currentTarget);
+                    }}
+                  >
+                    <Avatar sx={{ width: 36, height: 36 }} />
+                  </IconButton>
+                  <Popover
+                    id="notification-menu"
+                    anchorEl={notificationAnchorEl}
+                    open={Boolean(notificationAnchorEl)}
+                    onClose={() => {
+                      setNotificationAnchorEl(null);
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    No new notifications.
+                  </Popover>
+                  <Menu
+                    id="profile-menu"
+                    anchorEl={profileAnchorEl}
+                    open={Boolean(profileAnchorEl)}
+                    onClose={() => {
+                      setProfileAnchorEl(null);
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        setProfileAnchorEl(null);
+                        navigate(`/users/${userData.username}`);
+                      }}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        setProfileAnchorEl(null);
+                        navigate("/chat");
+                      }}
+                    >
+                      Chat
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem
+                      onClick={() => {
+                        setProfileAnchorEl(null);
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  </Menu>
                 </>
               ) : (
                 <>
