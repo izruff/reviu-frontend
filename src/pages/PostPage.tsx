@@ -15,9 +15,9 @@ type Props = {
 };
 */
 
-async function getReplies(postId: number, commentId: number) {
+async function getReplies(commentId: number) {
   const data = (await fetch(
-    `${API_URL}/public/posts/id/${postId}/comments/id/${commentId}/replies`,
+    `${API_URL}/public/comments/id/${commentId}/replies`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -35,7 +35,7 @@ async function getReplies(postId: number, commentId: number) {
 }
 
 async function getCommentTree(postId: number, comment: CommentType) {
-  const replies = await getReplies(postId, comment.commentId);
+  const replies = await getReplies(comment.commentId);
   if (replies.length === 0) {
     return {
       parent: comment,
