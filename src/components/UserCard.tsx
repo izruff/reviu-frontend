@@ -28,9 +28,7 @@ const UserCard = (props: Props) => {
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar sx={{ width: 48, height: 48 }} />
             <Stack direction="column" spacing={2}>
-              <Typography variant="h4">
-                {props.user.username}
-              </Typography>
+              <Typography variant="h4">{props.user.username}</Typography>
               <Typography variant="subtitle2">
                 {props.user.nickname || "No nickname"}
               </Typography>

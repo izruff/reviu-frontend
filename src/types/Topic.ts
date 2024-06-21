@@ -1,5 +1,5 @@
 export type TopicType = {
-  topicId: number;
+  id: number;
   topic: string;
   hub: string;
   description: string;

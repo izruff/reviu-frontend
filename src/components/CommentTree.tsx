@@ -13,7 +13,7 @@ const CommentTree = (props: Props) => {
       <CommentBody comment={props.commentTree.parent} level={props.rootLevel} />
       {props.commentTree.children.map((commentTree) => (
         <CommentTree
-          key={commentTree.parent.commentId}
+          key={commentTree.parent.id}
           commentTree={commentTree}
           rootLevel={props.rootLevel + 1}
         />

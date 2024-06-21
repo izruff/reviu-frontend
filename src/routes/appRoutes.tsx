@@ -11,7 +11,6 @@ import HubPage from "../pages/HubPage";
 import ErrNotFoundPage from "../pages/errors/ErrNotFoundPage";
 import ErrUnknownPage from "../pages/errors/ErrUnknownPage";
 
-
 export const appRoutes = [
   {
     element: <Layout />,

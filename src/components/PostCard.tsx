@@ -24,12 +24,12 @@ const PostCard = (props: Props) => {
         backgroundColor: "inherit",
       }}
     >
-      <CardActionArea component={Link} to={`/posts/${props.post.postId}`}>
+      <CardActionArea component={Link} to={`/posts/${props.post.id}`}>
         <CardContent sx={{ padding: 2 }}>
           <Stack direction="column" spacing={2}>
             <div>
               <Typography variant="subtitle2">
-                On the topic of <TopicLink topicId={props.post.topicId} />
+                On the topic of <TopicLink topic={props.post.topicId} />
               </Typography>
               <Typography variant="h4">{props.post.title}</Typography>
             </div>
@@ -52,8 +52,8 @@ const PostCard = (props: Props) => {
               </Typography>
               <Avatar sx={{ width: 24, height: 24 }} />
               <Typography variant="subtitle2">
-                Posted by <UserLink userId={props.post.authorId} />, on{" "}
-                {props.post.createdAt}.
+                Posted by <UserLink user={props.post.authorId} />, on{" "}
+                {props.post.createdAt.toDateString()}.
               </Typography>
             </Stack>
           </Stack>

@@ -69,7 +69,7 @@ const TopicSearchPage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {topicSearchResults.map((topic) => (
-          <Typography key={topic.topicId}>This is a topic.</Typography>
+          <Typography key={topic.id}>This is a topic.</Typography>
         ))}
       </Stack>
     </>

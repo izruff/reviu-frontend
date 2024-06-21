@@ -1,10 +1,8 @@
 export type UserType = {
+  id: number;
   username: string;
   nickname: string;
   about: string;
   createdAt: Date;
-  followerCount: number;
-  followingCount: number;
-  postCount: number;
   rating: number;
 };

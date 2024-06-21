@@ -18,6 +18,16 @@ const PostSearchPage = () => {
       .then((res) => {
         return res.json();
       })
+      .then((rawData) => {
+        /* eslint-disable */
+        for (let post of rawData) {
+          post.createdAt = new Date(post.createdAt);
+          post.updatedAt = new Date(post.updatedAt);
+          post.deletedAt = new Date(post.deletedAt);
+        }
+        return rawData;
+        /* eslint-enable */
+      })
       .then((data: PostType[]) => {
         setPostSearchResults(data);
       })
@@ -57,7 +67,7 @@ const PostSearchPage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {postSearchResults.map((post) => (
-          <PostCard key={post.postId} post={post} />
+          <PostCard key={post.id} post={post} />
         ))}
       </Stack>
     </>

@@ -22,12 +22,12 @@ const ActivityCard = (props: Props) => {
         backgroundColor: "inherit",
       }}
     >
-      <CardActionArea component={Link} to={`/posts/${props.post.postId}`}>
+      <CardActionArea component={Link} to={`/posts/${props.post.id}`}>
         <CardContent sx={{ padding: 2 }}>
           <Stack direction="column" spacing={2}>
             <div>
               <Typography variant="subtitle2">
-                Posted on {props.post.createdAt}
+                Posted on {props.post.createdAt.toDateString()}
               </Typography>
               <Typography variant="h4">{props.post.title}</Typography>
             </div>

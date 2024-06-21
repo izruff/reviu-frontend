@@ -70,13 +70,19 @@ const Layout = () => {
         .then((data: { status: string; userId?: number }) => {
           if (data.status === "success") {
             dispatch(getUserData());
-            fetch(`${API_URL}/public/users/id/${data.userId}/`, {
+            fetch(`${API_URL}/public/users/id/${data.userId}`, {
               method: "GET",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
             })
               .then((res) => {
                 return res.json();
+              })
+              .then((rawData) => {
+                /* eslint-disable */
+                rawData.createdAt = new Date(rawData.createdAt);
+                return rawData;
+                /* eslint-enable */
               })
               .then((userData: UserType) => {
                 dispatch(getUserDataSuccess({ username: userData.username }));

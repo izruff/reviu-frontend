@@ -90,9 +90,9 @@ const PostBody = (props: Props) => {
             <Stack direction="row" spacing={1} alignItems="center">
               <Avatar sx={{ width: 24, height: 24 }} />
               <Typography variant="subtitle2">
-                Posted by <UserLink userId={props.post.authorId} /> on the topic
-                of <TopicLink topicId={props.post.topicId} />, on{" "}
-                {props.post.createdAt}.
+                Posted by <UserLink user={props.post.authorId} /> on the topic
+                of <TopicLink topic={props.post.topicId} />, on{" "}
+                {props.post.createdAt.toDateString()}.
               </Typography>
             </Stack>
             <Typography variant="h2">{props.post.title}</Typography>
@@ -119,6 +119,9 @@ const PostBody = (props: Props) => {
               <Button variant="outlined" startIcon={<Share />}>
                 Share
               </Button>
+              <Typography variant="subtitle2">
+                {props.post.viewCount} views.
+              </Typography>
             </Stack>
             <Stack direction="row" spacing={2} alignItems="center">
               <Button
@@ -144,7 +147,7 @@ const PostBody = (props: Props) => {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    handleSubmitReply(replyContent, props.post.postId)
+                    handleSubmitReply(replyContent, props.post.id)
                       .then(({ status, data }) => {
                         if (status === "success") {
                           navigate(`/comments/${data?.commentId}`);

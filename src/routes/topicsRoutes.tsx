@@ -2,7 +2,6 @@ import TopicSearchPage from "../pages/TopicSearchPage";
 
 import TestPage from "../pages/TestPage";
 
-
 export const topicsRoutes = [
   {
     index: true,

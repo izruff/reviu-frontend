@@ -10,12 +10,22 @@ const HomePage = () => {
   const [discoverList, setDiscoverList] = React.useState<PostType[]>([]);
 
   React.useEffect(() => {
-    fetch(`${API_URL}/public/posts/`, {
+    fetch(`${API_URL}/public/posts`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
         return res.json();
+      })
+      .then((rawData) => {
+        /* eslint-disable */
+        for (let post of rawData) {
+          post.createdAt = new Date(post.createdAt);
+          post.updatedAt = new Date(post.updatedAt);
+          post.deletedAt = new Date(post.deletedAt);
+        }
+        return rawData;
+        /* eslint-enable */
       })
       .then((data: PostType[]) => {
         // Discover list should be have a "infinite scroll" feature which gets 15 more posts every time the user scrolls to the bottom, but this is not yet implemented so we will display all posts instead
@@ -43,7 +53,7 @@ const HomePage = () => {
         }}
       >
         {trendingList.map((post) => (
-          <TrendingPostCard key={post.postId} post={post} />
+          <TrendingPostCard key={post.id} post={post} />
         ))}
       </Stack>
 
@@ -56,7 +66,7 @@ const HomePage = () => {
         divider={<Divider orientation="horizontal" flexItem />}
       >
         {discoverList.map((post) => (
-          <PostCard key={post.postId} post={post} />
+          <PostCard key={post.id} post={post} />
         ))}
       </Stack>
     </>

@@ -21,21 +21,23 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 
-
 const UserPage = () => {
   const username = useParams().username;
   const [userData, setUserData] = React.useState<UserType | null>(null);
   const [userActivity, setUserActivity] = React.useState<PostType[]>([]);
   const [userFollowers, setUserFollowers] = React.useState<UserType[]>([]);
   const [userFollowings, setUserFollowings] = React.useState<UserType[]>([]);
-  const [selectedRelations, setSelectedRelations] = React.useState<string>("followers");
+  const [selectedRelations, setSelectedRelations] =
+    React.useState<string>("followers");
   const [relationsSearch, setRelationsSearch] = React.useState<string>("");
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  const loggedInUsername = useAppSelector((state) => state.auth.userData?.username)
+  const loggedInUsername = useAppSelector(
+    (state) => state.auth.userData?.username,
+  );
 
   React.useEffect(() => {
-    fetch(`${API_URL}/public/users/name/${username}/`, {
+    fetch(`${API_URL}/public/users/name/${username}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -45,7 +47,7 @@ const UserPage = () => {
       .then((rawData) => {
         /* eslint-disable */
         rawData.createdAt = new Date(rawData.createdAt);
-        return rawData
+        return rawData;
         /* eslint-enable */
       })
       .then((data: UserType) => {
@@ -64,6 +66,16 @@ const UserPage = () => {
       .then((res) => {
         return res.json();
       })
+      .then((rawData) => {
+        /* eslint-disable */
+        for (let post of rawData) {
+          post.createdAt = new Date(post.createdAt);
+          post.updatedAt = new Date(post.updatedAt);
+          post.deletedAt = new Date(post.deletedAt);
+        }
+        return rawData;
+        /* eslint-enable */
+      })
       .then((data: PostType[]) => {
         setUserActivity(data);
       })
@@ -80,6 +92,17 @@ const UserPage = () => {
       .then((res) => {
         return res.json();
       })
+      .then((rawData) => {
+        /* eslint-disable */
+        for (let user of rawData.followers) {
+          user.createdAt = new Date(user.createdAt);
+        }
+        for (let user of rawData.followings) {
+          user.createdAt = new Date(user.createdAt);
+        }
+        return rawData;
+        /* eslint-enable */
+      })
       .then((data: { followers: UserType[]; followings: UserType[] }) => {
         setUserFollowers(data.followers);
         setUserFollowings(data.followings);
@@ -87,7 +110,7 @@ const UserPage = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [username])
+  }, [username]);
 
   return (
     <>
@@ -98,18 +121,28 @@ const UserPage = () => {
               <Avatar sx={{ width: 200, height: 200 }} />
               <Stack direction="column" spacing={2}>
                 <Typography variant="h2">{userData.username}</Typography>
-                <Typography variant="h4">{userData.nickname || "No nickname"}</Typography>
-                <Typography variant="body1">{userData.about || "No description provided."}</Typography>
+                <Typography variant="h4">
+                  {userData.nickname || "No nickname"}
+                </Typography>
+                <Typography variant="body1">
+                  {userData.about || "No description provided."}
+                </Typography>
                 <Typography variant="h6">Rating: {userData.rating}</Typography>
-                <Typography variant="subtitle2">Member since {userData.createdAt.toDateString()}</Typography>
+                <Typography variant="subtitle2">
+                  Member since {userData.createdAt.toDateString()}
+                </Typography>
               </Stack>
             </Stack>
             <Stack direction="column" spacing={2}>
-              {loggedInUsername === username ? <>
-              <Button variant="contained">Edit</Button>
-              </> : <>
-              <Button variant="contained">Follow</Button>
-              </>}
+              {loggedInUsername === username ? (
+                <>
+                  <Button variant="contained">Edit</Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="contained">Follow</Button>
+                </>
+              )}
             </Stack>
           </Stack>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }} my={2}>
@@ -131,7 +164,7 @@ const UserPage = () => {
           <TabPanel tabIndex={tabIndex} index={0}>
             <Stack direction="column" spacing={2}>
               {userActivity.map((activity) => (
-                <ActivityCard key={activity.postId} post={activity} />  // TODO: ActivityCard component will be changed to include comments and other types of activity
+                <ActivityCard key={activity.id} post={activity} /> // TODO: ActivityCard component will be changed to include comments and other types of activity
               ))}
             </Stack>
           </TabPanel>
@@ -160,22 +193,22 @@ const UserPage = () => {
               />
             </Stack>
             <Grid container spacing={2}>
-              {selectedRelations === "followers" ? (
-                userFollowers.map((user) => (
-                  <UserCard key={user.username} user={user} />
-                ))
-              ) : (
-                userFollowings.map((user) => (
-                  <UserCard key={user.username} user={user} />
-                ))
-              )}
+              {selectedRelations === "followers"
+                ? userFollowers.map((user) => (
+                    <UserCard key={user.username} user={user} />
+                  ))
+                : userFollowings.map((user) => (
+                    <UserCard key={user.username} user={user} />
+                  ))}
             </Grid>
           </TabPanel>
-          {loggedInUsername === username && <>
-          <TabPanel tabIndex={tabIndex} index={2}>
-            This user&apos;s settings go here...
-          </TabPanel>
-          </>}
+          {loggedInUsername === username && (
+            <>
+              <TabPanel tabIndex={tabIndex} index={2}>
+                This user&apos;s settings go here...
+              </TabPanel>
+            </>
+          )}
         </Box>
       ) : (
         <Typography>Loading user profile...</Typography>

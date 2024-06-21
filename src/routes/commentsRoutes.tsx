@@ -8,5 +8,5 @@ export const commentsRoutes = [
   {
     path: ":commentId",
     element: <TestPage />,
-  }
+  },
 ];

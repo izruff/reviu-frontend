@@ -16,7 +16,7 @@ const TrendingPostCard = (props: Props) => {
         flexShrink: 0,
       }}
     >
-      <CardActionArea component={Link} to={`/posts/${props.post.postId}`}>
+      <CardActionArea component={Link} to={`/posts/${props.post.id}`}>
         <div // could have used MUI grid but there were issues with its negative margin feature
           style={{
             padding: "16px",
@@ -49,12 +49,12 @@ const TrendingPostCard = (props: Props) => {
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar />
             <Stack>
-              <TopicLink topicId={props.post.topicId} />
+              <TopicLink topic={props.post.topicId} />
               <Typography variant="subtitle2">
-                Posted by <UserLink userId={props.post.authorId} />, on{" "}
-                {props.post.createdAt}.
+                Posted by <UserLink user={props.post.authorId} />, on{" "}
+                {props.post.createdAt.toDateString()}.
                 {props.post.updatedAt
-                  ? ` Last updated on ${props.post.updatedAt}`
+                  ? ` Last updated on ${props.post.updatedAt.toDateString()}`
                   : ""}
               </Typography>
             </Stack>

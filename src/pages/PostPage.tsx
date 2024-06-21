@@ -26,6 +26,16 @@ async function getReplies(commentId: number) {
     .then((res) => {
       return res.json();
     })
+    .then((rawData) => {
+      /* eslint-disable */
+      for (let comment of rawData) {
+        comment.createdAt = new Date(comment.createdAt);
+        comment.updatedAt = new Date(comment.updatedAt);
+        comment.deletedAt = new Date(comment.deletedAt);
+      }
+      return rawData;
+      /* eslint-enable */
+    })
     .catch((error) => {
       console.log(error);
       return [];
@@ -35,7 +45,7 @@ async function getReplies(commentId: number) {
 }
 
 async function getCommentTree(postId: number, comment: CommentType) {
-  const replies = await getReplies(comment.commentId);
+  const replies = await getReplies(comment.id);
   if (replies.length === 0) {
     return {
       parent: comment,
@@ -71,15 +81,16 @@ const PostPage = () => {
       .then((res) => {
         return res.json();
       })
+      .then((rawData) => {
+        /* eslint-disable */
+        rawData.createdAt = new Date(rawData.createdAt);
+        rawData.updatedAt = new Date(rawData.updatedAt);
+        rawData.deletedAt = new Date(rawData.deletedAt);
+        return rawData;
+        /* eslint-enable */
+      })
       .then((data: PostType) => {
-        setPostData({
-          postId: postId,
-          title: data.title,
-          content: data.content,
-          authorId: data.authorId,
-          topicId: data.topicId,
-          createdAt: data.createdAt,
-        });
+        setPostData(data);
       })
       .catch((error) => {
         console.log(error);
@@ -94,6 +105,16 @@ const PostPage = () => {
     })
       .then((res) => {
         return res.json();
+      })
+      .then((rawData) => {
+        /* eslint-disable */
+        for (let comment of rawData) {
+          comment.createdAt = new Date(comment.createdAt);
+          comment.updatedAt = new Date(comment.updatedAt);
+          comment.deletedAt = new Date(comment.deletedAt);
+        }
+        return rawData;
+        /* eslint-enable */
       })
       .then(async (data: CommentType[]) => {
         const commentTrees = await Promise.all(
@@ -121,7 +142,7 @@ const PostPage = () => {
             <>
               {commentsData.map((commentTree) => (
                 <CommentTree
-                  key={commentTree.parent.commentId}
+                  key={commentTree.parent.id}
                   commentTree={commentTree}
                   rootLevel={0}
                 />
