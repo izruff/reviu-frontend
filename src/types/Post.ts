@@ -7,6 +7,7 @@ export type PostType = {
   createdAt: Date;
   updatedAt?: Date;
   viewCount: number;
+  voteCount: number;
   deletedAt?: Date;
   reasonForDeletion?: string;
   moderatorId?: number;

@@ -3,12 +3,14 @@ import { UserLink } from "./UserLink";
 import { TopicLink } from "./TopicLink";
 import { API_URL } from "../constants";
 import { PostType } from "../types/Post";
+import { useAppSelector } from "../app/hooks";
 import {
   Avatar,
   Button,
   Divider,
   IconButton,
   Paper,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -20,6 +22,7 @@ import {
 } from "@mui/icons-material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 
 type Props = {
   post: PostType;
@@ -68,19 +71,82 @@ async function handleSubmitReply(replyContent: string, postId: number) {
   return result;
 }
 
-function handleUpvote() {
-  console.log("Upvote");
-}
-
-function handleDownvote() {
-  console.log("Downvote");
-}
-
 const PostBody = (props: Props) => {
+  const [upvoted, setUpvoted] = React.useState<boolean | null>(null);
+  const [otherVoteCount, setOtherVoteCount] = React.useState<number | null>(null);
   const [replyContent, setReplyContent] = React.useState("");
   const [replyHidden, setReplyHidden] = React.useState(true);
 
+  const loggedInUsername = useAppSelector(
+    (state) => state.auth.userData?.username,
+  );
+
   const navigate = useNavigate();
+
+  function handleUpvote() {
+    const newVote = (upvoted === true ? null : true);
+    fetch(`${API_URL}/authorized/posts/id/${props.post.id}/vote`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        up: newVote,
+        postId: props.post.id,
+      }),
+    })
+      .then((res) => {
+        if (res.status !== 201) {
+          throw new Error(String(res.status));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setUpvoted(newVote)
+  }
+  
+  function handleDownvote() {
+    const newVote = (upvoted === false ? null : false);
+    fetch(`${API_URL}/authorized/posts/id/${props.post.id}/vote`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        up: newVote,
+        postId: props.post.id,
+      }),
+    })
+      .then((res) => {
+        if (res.status !== 201) {
+          throw new Error(String(res.status));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setUpvoted(newVote)
+  }
+
+  React.useEffect(() => {
+    setUpvoted(null);
+    setOtherVoteCount(null);
+    if (loggedInUsername) {
+      fetch(`${API_URL}/authorized/posts/id/${props.post.id}`, {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data : { voted: boolean | null }) => {
+          setUpvoted(data.voted);
+          setOtherVoteCount(props.post.voteCount - (data.voted === null ? 0 : data.voted ? 1 : -1));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setOtherVoteCount(props.post.voteCount);
+    }
+  }, [props.post, loggedInUsername]);
 
   return (
     <>
@@ -105,11 +171,13 @@ const PostBody = (props: Props) => {
           >
             <Stack direction="row" spacing={2} alignItems="center">
               <Stack direction="row" spacing={0.5} alignItems="center">
-                <IconButton size="small" onClick={handleUpvote}>
+                <IconButton size="small" color={upvoted === null || !upvoted ? "default" : "primary"} onClick={handleUpvote} disabled={!(otherVoteCount !== null && loggedInUsername)}>
                   <ArrowUpward />
                 </IconButton>
-                <Typography variant="h5">0</Typography>
-                <IconButton size="small" onClick={handleDownvote}>
+                <Typography variant="h5">
+                  {otherVoteCount === null ? <Skeleton /> : otherVoteCount + (upvoted === null ? 0 : upvoted ? 1 : -1)}
+                </Typography>
+                <IconButton size="small" color={upvoted === null || upvoted ? "default" : "primary"} onClick={handleDownvote} disabled={!(otherVoteCount !== null && loggedInUsername)}>
                   <ArrowDownward />
                 </IconButton>
               </Stack>
