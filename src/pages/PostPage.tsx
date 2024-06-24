@@ -25,17 +25,17 @@ async function getReplies(commentId: number) {
   )
     .then((res) => {
       return res.json();
-    })/*
+    })
     .then((rawData) => {
-      /* eslint-disable 
+      /* eslint-disable */
       for (let comment of rawData) {
         comment.createdAt = new Date(comment.createdAt);
         comment.updatedAt = new Date(comment.updatedAt);
         comment.deletedAt = new Date(comment.deletedAt);
       }
       return rawData;
-      /* eslint-enable 
-    })*/
+      /* eslint-enable */
+    })
     .catch((error) => {
       console.log(error);
       return [];
@@ -105,7 +105,7 @@ const PostPage = () => {
     })
       .then((res) => {
         return res.json();
-      })/*
+      }) /*
       .then((rawData) => {
         /* eslint-disable 
         for (let comment of rawData) {

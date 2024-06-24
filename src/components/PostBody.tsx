@@ -23,7 +23,6 @@ import {
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-
 type Props = {
   post: PostType;
 };
@@ -72,8 +71,11 @@ async function handleSubmitReply(replyContent: string, postId: number) {
 }
 
 const PostBody = (props: Props) => {
+  const [viewed, setViewed] = React.useState(false);
   const [upvoted, setUpvoted] = React.useState<boolean | null>(null);
-  const [otherVoteCount, setOtherVoteCount] = React.useState<number | null>(null);
+  const [otherVoteCount, setOtherVoteCount] = React.useState<number | null>(
+    null,
+  );
   const [replyContent, setReplyContent] = React.useState("");
   const [replyHidden, setReplyHidden] = React.useState(true);
 
@@ -84,7 +86,7 @@ const PostBody = (props: Props) => {
   const navigate = useNavigate();
 
   function handleUpvote() {
-    const newVote = (upvoted === true ? null : true);
+    const newVote = upvoted === true ? null : true;
     fetch(`${API_URL}/authorized/posts/id/${props.post.id}/vote`, {
       method: "POST",
       credentials: "include",
@@ -101,11 +103,11 @@ const PostBody = (props: Props) => {
       .catch((error) => {
         console.log(error);
       });
-    setUpvoted(newVote)
+    setUpvoted(newVote);
   }
-  
+
   function handleDownvote() {
-    const newVote = (upvoted === false ? null : false);
+    const newVote = upvoted === false ? null : false;
     fetch(`${API_URL}/authorized/posts/id/${props.post.id}/vote`, {
       method: "POST",
       credentials: "include",
@@ -122,7 +124,7 @@ const PostBody = (props: Props) => {
       .catch((error) => {
         console.log(error);
       });
-    setUpvoted(newVote)
+    setUpvoted(newVote);
   }
 
   React.useEffect(() => {
@@ -136,9 +138,27 @@ const PostBody = (props: Props) => {
         .then((res) => {
           return res.json();
         })
-        .then((data : { voted: boolean | null }) => {
+        .then((data: { viewed: boolean; voted: boolean | null }) => {
+          setViewed(data.viewed);
           setUpvoted(data.voted);
-          setOtherVoteCount(props.post.voteCount - (data.voted === null ? 0 : data.voted ? 1 : -1));
+          setOtherVoteCount(
+            props.post.voteCount -
+              (data.voted === null ? 0 : data.voted ? 1 : -1),
+          );
+          if (!data.viewed) {
+            fetch(`${API_URL}/authorized/posts/id/${props.post.id}/view`, {
+              method: "POST",
+              credentials: "include",
+            })
+              .then((res) => {
+                if (res.status !== 201) {
+                  throw new Error(String(res.status));
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -171,13 +191,27 @@ const PostBody = (props: Props) => {
           >
             <Stack direction="row" spacing={2} alignItems="center">
               <Stack direction="row" spacing={0.5} alignItems="center">
-                <IconButton size="small" color={upvoted === null || !upvoted ? "default" : "primary"} onClick={handleUpvote} disabled={!(otherVoteCount !== null && loggedInUsername)}>
+                <IconButton
+                  size="small"
+                  color={upvoted === null || !upvoted ? "default" : "primary"}
+                  onClick={handleUpvote}
+                  disabled={!(otherVoteCount !== null && loggedInUsername)}
+                >
                   <ArrowUpward />
                 </IconButton>
                 <Typography variant="h5">
-                  {otherVoteCount === null ? <Skeleton /> : otherVoteCount + (upvoted === null ? 0 : upvoted ? 1 : -1)}
+                  {otherVoteCount === null ? (
+                    <Skeleton />
+                  ) : (
+                    otherVoteCount + (upvoted === null ? 0 : upvoted ? 1 : -1)
+                  )}
                 </Typography>
-                <IconButton size="small" color={upvoted === null || upvoted ? "default" : "primary"} onClick={handleDownvote} disabled={!(otherVoteCount !== null && loggedInUsername)}>
+                <IconButton
+                  size="small"
+                  color={upvoted === null || upvoted ? "default" : "primary"}
+                  onClick={handleDownvote}
+                  disabled={!(otherVoteCount !== null && loggedInUsername)}
+                >
                   <ArrowDownward />
                 </IconButton>
               </Stack>
@@ -189,6 +223,7 @@ const PostBody = (props: Props) => {
               </Button>
               <Typography variant="subtitle2">
                 {props.post.viewCount} views.
+                {viewed && " You have viewed this post."}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={2} alignItems="center">
