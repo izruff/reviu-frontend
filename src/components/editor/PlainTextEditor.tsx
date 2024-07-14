@@ -49,13 +49,13 @@ const PlainTextEditor = (props: PlainTextEditorProps) => {
       initialConfig={{
         namespace: "plainTextEditor",
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onError: (error, editor) => {
+        onError: (error, _editor) => {
           // TODO: create error message handling and display
           console.log(error);
         },
       }}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onChange={(editorState, editor, tags) => {
+      onChange={(editorState, _editor, _tags) => {
         editorStateRef.current = editorState;
         if (props.onChange) {
           props.onChange(getPlainText());
